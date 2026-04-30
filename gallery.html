@@ -12,9 +12,12 @@
 <header class="site-header">
   <div class="inner">
     <a class="brand" href="index.html">Wandering<span class="dot">·</span>Light</a>
-    <nav class="nav">
-      <a href="gallery.html">Galleries</a>
-      <a href="index.html#story">Story</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="primary-nav">
+      <a href="gallery.html" class="is-active">Galleries</a>
+      <a href="story.html">Story</a>
       <a href="index.html#brands">For Brands</a>
       <a href="private.html" class="cta">Client Login</a>
     </nav>
@@ -31,7 +34,7 @@
       <span style="color: var(--olive);">● Public · all images licensable</span>
     </div>
     <h1>Olive groves and linen.</h1>
-    <p>Two weeks travelling slowly through Val d'Orcia. The children in cream linen and soft brown leathers — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay);">Petit Bateau</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay);">Bonpoint</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
+    <p>Two weeks travelling slowly through Val d'Orcia. The children in cream linen and soft brown leathers — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Petit Bateau</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
   </div>
 </section>
 
@@ -90,7 +93,7 @@
     <div class="grid">
       <div class="col">
         <p class="lead"><em>Wandering Light</em></p>
-        <p class="muted" style="opacity:0.7;">Children, clothes, and the road — photographed slowly.</p>
+        <p>Children, clothes, and the road — photographed slowly.</p>
       </div>
       <div class="col">
         <h4>Galleries</h4>
@@ -100,7 +103,7 @@
       </div>
       <div class="col">
         <h4>About</h4>
-        <a href="index.html#story">Our story</a>
+        <a href="story.html">Our story</a>
         <a href="#">Travel diary</a>
         <a href="#">Contact</a>
       </div>
@@ -126,6 +129,37 @@
     }
   });
   document.addEventListener('dragstart', e => e.preventDefault());
+
+  // Mobile nav toggle
+  (function() {
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('primary-nav');
+    const header = document.querySelector('.site-header');
+    if (!toggle || !nav || !header) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+    nav.addEventListener('click', e => {
+      if (e.target.tagName === 'A') setOpen(false);
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    document.addEventListener('click', e => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      if (header.contains(e.target)) return;
+      setOpen(false);
+    });
+  })();
 
   // Lightbox
   const lb = document.getElementById('lightbox');
