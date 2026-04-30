@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography Business — Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --bg-primary: #f0f2f5;
+            --bg-card: #ffffff;
+            --bg-header: #0f1923;
+            --bg-nav: #1a2535;
+            --text-primary: #1a1a2e;
+            --text-secondary: #6c757d;
+            --text-on-dark: #ffffff;
+            --accent: #c9a96e;
+            --accent-light: #e8d5b0;
+            --color-1: #c9a96e;
+            --color-2: #4C72B0;
+            --color-3: #55A868;
+            --color-4: #C44E52;
+            --color-5: #8172B3;
+            --color-6: #937860;
+            --positive: #28a745;
+            --negative: #dc3545;
+            --neutral: #6c757d;
+            --gap: 16px;
+            --radius: 10px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        /* ── HEADER ── */
+        .dashboard-header {
+            background: var(--bg-header);
+            color: var(--text-on-dark);
+            padding: 18px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 14px; }
+
+        .logo-mark {
+            width: 36px; height: 36px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+
+        .header-title { font-size: 18px; font-weight: 700; letter-spacing: 0.3px; }
+        .header-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+
+        .filters {
+            display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+        }
+
+        .filter-group { display: flex; align-items: center; gap: 6px; }
+
+        .filter-group label {
+            font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .filter-group select,
+        .filter-group input[type="date"] {
+            padding: 6px 10px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.08);
+            color: var(--text-on-dark);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .filter-group select option { background: #1a2535; }
+
+        .badge-sample {
+            background: var(--accent);
+            color: #0f1923;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── NAV TABS ── */
+        .nav-tabs {
+            background: var(--bg-nav);
+            padding: 0 28px;
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .nav-tab {
+            padding: 12px 18px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover { color: rgba(255,255,255,0.85); }
+        .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+        /* ── MAIN CONTENT ── */
+        .dashboard-body { padding: var(--gap) 28px 32px; max-width: 1500px; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── KPI ROW ── */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            border-left: 3px solid transparent;
+            transition: transform 0.15s;
+        }
+
+        .kpi-card:hover { transform: translateY(-1px); }
+        .kpi-card.accent { border-left-color: var(--accent); }
+        .kpi-card.blue { border-left-color: var(--color-2); }
+        .kpi-card.green { border-left-color: var(--color-3); }
+        .kpi-card.red { border-left-color: var(--color-4); }
+        .kpi-card.purple { border-left-color: var(--color-5); }
+
+        .kpi-label {
+            font-size: 11px; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;
+        }
+
+        .kpi-value { font-size: 26px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+        .kpi-change { font-size: 12px; font-weight: 500; }
+        .kpi-change.positive { color: var(--positive); }
+        .kpi-change.negative { color: var(--negative); }
+        .kpi-change.neutral { color: var(--neutral); }
+
+        /* ── CHARTS ── */
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
+
+        .chart-row.thirds {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        }
+
+        .chart-container.wide { grid-column: span 2; }
+
+        .chart-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .chart-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .chart-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+        canvas { max-height: 260px; }
+
+        /* ── TABLES ── */
+        .table-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            margin-bottom: var(--gap);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .table-title { font-size: 13px; font-weight: 600; }
+
+        .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+        .data-table thead th {
+            text-align: left; padding: 9px 12px;
+            border-bottom: 2px solid #e9ecef;
+            color: var(--text-secondary); font-weight: 600;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+            cursor: pointer; white-space: nowrap; user-select: none;
+        }
+
+        .data-table thead th:hover { color: var(--text-primary); background: #f8f9fa; }
+
+        .data-table tbody td {
+            padding: 9px 12px; border-bottom: 1px solid #f3f4f6;
+        }
+
+        .data-table tbody tr:hover { background: #fafbfc; }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .badge {
+            display: inline-block; padding: 2px 8px; border-radius: 20px;
+            font-size: 11px; font-weight: 600;
+        }
+
+        .badge-green { background: #d4edda; color: #155724; }
+        .badge-yellow { background: #fff3cd; color: #856404; }
+        .badge-red { background: #f8d7da; color: #721c24; }
+        .badge-blue { background: #d1ecf1; color: #0c5460; }
+        .badge-grey { background: #e2e3e5; color: #383d41; }
+
+        /* ── SECTION HEADER ── */
+        .section-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-secondary);
+            margin-bottom: 10px; margin-top: 4px;
+            padding-bottom: 6px; border-bottom: 1px solid #e9ecef;
+        }
+
+        /* ── INSIGHT CARDS ── */
+        .insight-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--gap); margin-bottom: var(--gap);
+        }
+
+        .insight-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            display: flex; gap: 14px; align-items: flex-start;
+        }
+
+        .insight-icon {
+            font-size: 22px; width: 40px; height: 40px;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .insight-icon.gold { background: #fdf3dc; }
+        .insight-icon.blue { background: #dbeafe; }
+        .insight-icon.green { background: #d1fae5; }
+        .insight-icon.red { background: #fee2e2; }
+
+        .insight-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .insight-value { font-size: 17px; font-weight: 700; margin-top: 2px; }
+        .insight-desc { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+
+        /* ── FOOTER ── */
+        .dashboard-footer {
+            padding: 14px 28px;
+            font-size: 11px; color: var(--text-secondary);
+            display: flex; justify-content: space-between;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .chart-container.wide { grid-column: span 1; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+            .chart-row { grid-template-columns: 1fr; }
+            .dashboard-body { padding: 12px 14px 24px; }
+            .nav-tabs { padding: 0 14px; }
+            .dashboard-header { padding: 14px 14px; }
+        }
+
+        @media print {
+            .nav-tabs, .filters, .dashboard-footer { display: none; }
+            .tab-panel { display: block !important; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="dashboard-header">
+    <div class="header-left">
+        <div class="logo-mark">📷</div>
+        <div>
+            <div class="header-title">Photography Admin</div>
+            <div class="header-sub">Business Intelligence Dashboard</div>
+        </div>
+    </div>
+    <div class="filters">
+        <span class="badge-sample">SAMPLE DATA</span>
+        <div class="filter-group">
+            <label>Period</label>
+            <select id="filter-period" onchange="applyGlobalFilter()">
+                <option value="30">Last 30 days</option>
+                <option value="90" selected>Last 90 days</option>
+                <option value="180">Last 6 months</option>
+                <option value="365">Last 12 months</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Gallery</label>
+            <select id="filter-gallery" onchange="applyGlobalFilter()">
+                <option value="all">All Galleries</option>
+                <option value="Landscapes">Landscapes</option>
+                <option value="Portraits">Portraits</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Wildlife">Wildlife</option>
+                <option value="Abstract">Abstract</option>
+            </select>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-tabs">
+    <div class="nav-tab active" onclick="switchTab('overview')">📊 Overview</div>
+    <div class="nav-tab" onclick="switchTab('sales')">💰 Sales & Licensing</div>
+    <div class="nav-tab" onclick="switchTab('audience')">👥 Audience</div>
+    <div class="nav-tab" onclick="switchTab('gallery')">🖼 Gallery Performance</div>
+    <div class="nav-tab" onclick="switchTab('clients')">🔐 Private Clients</div>
+    <div class="nav-tab" onclick="switchTab('enquiries')">✉️ Enquiries</div>
+</nav>
+
+<div class="dashboard-body">
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB 1: OVERVIEW                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="tab-panel active" id="tab-overview">
+
+        <div class="kpi-row">
+            <div class="kpi-card accent">
+                <div class="kpi-label">Total Revenue</div>
+                <div class="kpi-value" id="kpi-revenue">—</div>
+                <div class="kpi-change" id="kpi-revenue-chg">—</div>
+            </div>
+            <div class="kpi-card blue">
+                <div class="kpi-label">Site Visitors</div>
+                <div class="kpi-value" id="kpi-visitors">—</div>
+                <div class="kpi-change" id="kpi-visitors-chg">—</div>
+            </div>
+            <div class="kpi-card green">
+                <div class="kpi-label">Licences Sold</div>
+                <div class="kpi-value" id="kpi-licences">—</div>
+                <div class="kpi-change" id="kpi-licences-chg">—</div>
+            </div>
+            <div class="kpi-card purple">
+                <div class="kpi-label">Enquiries</div>
+                <div class="kpi-value" id="kpi-enquiries">—</div>
+                <div class="kpi-change" id="kpi-enquiries-chg">—</div>
+            </div>
+            <div class="kpi-card red">
+                <div class="kpi-label">Conversion Rate</div>
+                <div class="kpi-value" id="kpi-conv">—</div>
+                <div class="kpi-change" id="kpi-conv-chg">—</div>
+            </div>
+            <div class="kpi-card accent">
+                <div class="kpi-label">Avg Licence Value</div>
+                <div class="kpi-value" id="kpi-alv">—</div>
+                <div class="kpi-change" id="kpi-alv-chg">—</div>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container wide">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">Revenue & Visitor Trend</div>
+                        <div class="chart-sub">Monthly revenue (£) vs site visitors</div>
+                    </div>
+                </div>
+                <canvas id="chart-revenue-trend"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">Revenue by Licence Type</div>
+                        <div class="chart-sub">Breakdown of sales channel</div>
+                    </div>
+                </div>
+                <canvas id="chart-licence-split"></canvas>
+            </div>
+        </div>
+
+        <div class="insight-row">
+            <div class="insight-card">
+                <div class="insight-icon gold">🏆</div>
+                <div>
+                    <div class="insight-label">Best Performing Image</div>
+                    <div class="insight-value">Misty Highland Glen</div>
+                    <div class="insight-desc">14 licences · £1,960 revenue</div>
+                </div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-icon blue">🔥</div>
+                <div>
+                    <div class="insight-label">Most Viewed Gallery</div>
+                    <div class="insight-value">Landscapes</div>
+                    <div class="insight-desc">4,820 views this period</div>
+                </div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-icon green">⭐</div>
+                <div>
+                    <div class="insight-label">Most Favourited Image</div>
+                    <div class="insight-value">Golden Hour Pier</div>
+                    <div class="insight-desc">Favourited by 38 visitors</div>
+                </div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-icon red">⚡</div>
+                <div>
+                    <div class="insight-label">Pending Enquiries</div>
+                    <div class="insight-value" id="insight-pending">—</div>
+                    <div class="insight-desc">Awaiting your response</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB 2: SALES & LICENSING                  -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-sales">
+
+        <div class="kpi-row">
+            <div class="kpi-card accent">
+                <div class="kpi-label">Gross Revenue</div>
+                <div class="kpi-value" id="s-kpi-rev">—</div>
+                <div class="kpi-change positive">↑ +18.4% vs prior period</div>
+            </div>
+            <div class="kpi-card green">
+                <div class="kpi-label">Editorial Licences</div>
+                <div class="kpi-value">34</div>
+                <div class="kpi-change positive">↑ +6 vs prior</div>
+            </div>
+            <div class="kpi-card blue">
+                <div class="kpi-label">Commercial Licences</div>
+                <div class="kpi-value">22</div>
+                <div class="kpi-change positive">↑ +4 vs prior</div>
+            </div>
+            <div class="kpi-card purple">
+                <div class="kpi-label">Fine Art Print Sales</div>
+                <div class="kpi-value">11</div>
+                <div class="kpi-change neutral">→ Same as prior</div>
+            </div>
+            <div class="kpi-card red">
+                <div class="kpi-label">Avg Days to Close</div>
+                <div class="kpi-value">4.2</div>
+                <div class="kpi-change positive">↓ 1.3 days faster</div>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Monthly Sales Volume by Type</div>
+                <canvas id="chart-sales-type"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Revenue by Gallery</div>
+                <canvas id="chart-rev-gallery"></canvas>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">Recent Licence Sales</div>
+            </div>
+            <div id="sales-table"></div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB 3: AUDIENCE                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-audience">
+
+        <div class="kpi-row">
+            <div class="kpi-card blue">
+                <div class="kpi-label">Total Visitors</div>
+                <div class="kpi-value" id="a-kpi-vis">—</div>
+                <div class="kpi-change positive">↑ +12.1% vs prior</div>
+            </div>
+            <div class="kpi-card accent">
+                <div class="kpi-label">Avg Session Duration</div>
+                <div class="kpi-value">3m 42s</div>
+                <div class="kpi-change positive">↑ +28s vs prior</div>
+            </div>
+            <div class="kpi-card green">
+                <div class="kpi-label">Pages per Session</div>
+                <div class="kpi-value">4.8</div>
+                <div class="kpi-change positive">↑ +0.6 vs prior</div>
+            </div>
+            <div class="kpi-card purple">
+                <div class="kpi-label">Return Visitor Rate</div>
+                <div class="kpi-value">31.4%</div>
+                <div class="kpi-change positive">↑ +4.2% vs prior</div>
+            </div>
+            <div class="kpi-card red">
+                <div class="kpi-label">Bounce Rate</div>
+                <div class="kpi-value">38.7%</div>
+                <div class="kpi-change positive">↓ 3.1% (improved)</div>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Traffic Sources</div>
+                <canvas id="chart-traffic-source"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Visitor Geography (Top Countries)</div>
+                <canvas id="chart-geography"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Device Type</div>
+                <canvas id="chart-device"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container wide">
+                <div class="chart-title" style="margin-bottom:14px">Weekly Visitor Trend</div>
+                <canvas id="chart-visitor-trend"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB 4: GALLERY PERFORMANCE                -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-gallery">
+
+        <div class="kpi-row">
+            <div class="kpi-card blue">
+                <div class="kpi-label">Total Image Views</div>
+                <div class="kpi-value">18,420</div>
+                <div class="kpi-change positive">↑ +22% vs prior</div>
+            </div>
+            <div class="kpi-card accent">
+                <div class="kpi-label">Lightbox Opens</div>
+                <div class="kpi-value">6,840</div>
+                <div class="kpi-change positive">↑ +15% vs prior</div>
+            </div>
+            <div class="kpi-card green">
+                <div class="kpi-label">Total Favourites</div>
+                <div class="kpi-value">892</div>
+                <div class="kpi-change positive">↑ +44 this period</div>
+            </div>
+            <div class="kpi-card purple">
+                <div class="kpi-label">Lightbox Rate</div>
+                <div class="kpi-value">37.1%</div>
+                <div class="kpi-change neutral">→ Steady</div>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Gallery Views Comparison</div>
+                <canvas id="chart-gallery-views"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Lightbox-to-Enquiry Rate by Gallery</div>
+                <canvas id="chart-gallery-conv"></canvas>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">Top Images by Engagement</div>
+            </div>
+            <div id="gallery-table"></div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB 5: PRIVATE CLIENTS                    -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-clients">
+
+        <div class="kpi-row">
+            <div class="kpi-card accent">
+                <div class="kpi-label">Active Clients</div>
+                <div class="kpi-value">12</div>
+                <div class="kpi-change positive">↑ 3 new this period</div>
+            </div>
+            <div class="kpi-card blue">
+                <div class="kpi-label">Total Private Logins</div>
+                <div class="kpi-value">148</div>
+                <div class="kpi-change positive">↑ +28 vs prior</div>
+            </div>
+            <div class="kpi-card green">
+                <div class="kpi-label">Images Favourited</div>
+                <div class="kpi-value">312</div>
+                <div class="kpi-change positive">↑ +67 vs prior</div>
+            </div>
+            <div class="kpi-card purple">
+                <div class="kpi-label">Avg Images per Client</div>
+                <div class="kpi-value">48</div>
+                <div class="kpi-change neutral">→ Consistent</div>
+            </div>
+            <div class="kpi-card red">
+                <div class="kpi-label">Galleries Awaiting Review</div>
+                <div class="kpi-value">2</div>
+                <div class="kpi-change neutral">→ Action needed</div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">Client Activity Log</div>
+            </div>
+            <div id="clients-table"></div>
+        </div>
+
+        <div class="chart-row" style="margin-top:var(--gap)">
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Client Login Activity (Last 8 Weeks)</div>
+                <canvas id="chart-client-logins"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Favourites by Client</div>
+                <canvas id="chart-client-favs"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB 6: ENQUIRIES                          -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-enquiries">
+
+        <div class="kpi-row">
+            <div class="kpi-card accent">
+                <div class="kpi-label">Total Enquiries</div>
+                <div class="kpi-value" id="e-kpi-total">—</div>
+                <div class="kpi-change positive">↑ +8 vs prior period</div>
+            </div>
+            <div class="kpi-card green">
+                <div class="kpi-label">Converted to Sale</div>
+                <div class="kpi-value">28</div>
+                <div class="kpi-change positive">40.6% close rate</div>
+            </div>
+            <div class="kpi-card blue">
+                <div class="kpi-label">Licensing Enquiries</div>
+                <div class="kpi-value">41</div>
+                <div class="kpi-change positive">↑ +11 vs prior</div>
+            </div>
+            <div class="kpi-card purple">
+                <div class="kpi-label">General / Contact</div>
+                <div class="kpi-value">28</div>
+                <div class="kpi-change neutral">→ Steady</div>
+            </div>
+            <div class="kpi-card red">
+                <div class="kpi-label">Avg Response Time</div>
+                <div class="kpi-value">6.2h</div>
+                <div class="kpi-change positive">↓ 1.8h faster</div>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Enquiry Volume by Week</div>
+                <canvas id="chart-enq-volume"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom:14px">Enquiry Type Breakdown</div>
+                <canvas id="chart-enq-type"></canvas>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">Enquiry Pipeline</div>
+            </div>
+            <div id="enquiries-table"></div>
+        </div>
+    </div>
+
+</div><!-- /dashboard-body -->
+
+<footer class="dashboard-footer">
+    <span>⚠️ Sample data — replace with live database queries once site is live</span>
+    <span>Data schema: visitors · gallery_events · image_favourites · enquiries · licences · client_sessions</span>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════
+// SAMPLE DATA
+// ════════════════════════════════════════════════
+
+const COLORS = ['#c9a96e','#4C72B0','#55A868','#C44E52','#8172B3','#937860','#64b5f6','#a5d6a7'];
+
+const MONTHLY = [
+    { month: 'Nov', revenue: 1240, visitors: 1820, licences: 8,  enquiries: 11 },
+    { month: 'Dec', revenue: 980,  visitors: 1530, licences: 6,  enquiries: 8  },
+    { month: 'Jan', revenue: 1580, visitors: 2140, licences: 11, enquiries: 14 },
+    { month: 'Feb', revenue: 2100, visitors: 2680, licences: 14, enquiries: 18 },
+    { month: 'Mar', revenue: 2480, visitors: 3120, licences: 17, enquiries: 22 },
+    { month: 'Apr', revenue: 3040, visitors: 3760, licences: 21, enquiries: 26 },
+];
+
+const SALES = [
+    { date:'2026-04-18', image:'Misty Highland Glen',   gallery:'Landscapes',    type:'Commercial', amount:280, status:'Completed' },
+    { date:'2026-04-16', image:'Urban Geometry #4',     gallery:'Architecture',  type:'Editorial',  amount:120, status:'Completed' },
+    { date:'2026-04-14', image:'Golden Hour Pier',      gallery:'Landscapes',    type:'Fine Art',   amount:450, status:'Completed' },
+    { date:'2026-04-12', image:'Portrait in Bloom',     gallery:'Portraits',     type:'Commercial', amount:320, status:'Completed' },
+    { date:'2026-04-10', image:'Snow Leopard Study',    gallery:'Wildlife',      type:'Editorial',  amount:180, status:'Completed' },
+    { date:'2026-04-08', image:'Abstract Waves III',    gallery:'Abstract',      type:'Commercial', amount:260, status:'Completed' },
+    { date:'2026-04-05', image:'Old Town Rooftops',     gallery:'Architecture',  type:'Editorial',  amount:140, status:'Completed' },
+    { date:'2026-04-02', image:'Moorland at Dawn',      gallery:'Landscapes',    type:'Fine Art',   amount:380, status:'Completed' },
+    { date:'2026-03-30', image:'Barn Owl in Flight',    gallery:'Wildlife',      type:'Commercial', amount:300, status:'Completed' },
+    { date:'2026-03-27', image:'Neon Reflections',      gallery:'Abstract',      type:'Editorial',  amount:110, status:'Pending'   },
+];
+
+const ENQUIRIES = [
+    { date:'2026-04-25', name:'Harriet Webb',     type:'Licensing',  image:'Misty Highland Glen',  status:'Pending',   value:'£280' },
+    { date:'2026-04-23', name:'Tom Bridges',      type:'Licensing',  image:'Golden Hour Pier',     status:'Pending',   value:'£450' },
+    { date:'2026-04-21', name:'Freya Johansson',  type:'General',    image:'—',                    status:'Replied',   value:'—'    },
+    { date:'2026-04-19', name:'Marcus Osei',      type:'Licensing',  image:'Urban Geometry #4',    status:'Converted', value:'£120' },
+    { date:'2026-04-17', name:'Iona McDonald',    type:'Fine Art',   image:'Moorland at Dawn',     status:'Converted', value:'£380' },
+    { date:'2026-04-15', name:'Dev Patel',        type:'Licensing',  image:'Barn Owl in Flight',   status:'Pending',   value:'£300' },
+    { date:'2026-04-13', name:'Sophia Laurent',   type:'General',    image:'—',                    status:'Replied',   value:'—'    },
+    { date:'2026-04-11', name:'James Whitfield',  type:'Licensing',  image:'Portrait in Bloom',    status:'Converted', value:'£320' },
+    { date:'2026-04-09', name:'Amara Diallo',     type:'Fine Art',   image:'Abstract Waves III',   status:'Converted', value:'£260' },
+    { date:'2026-04-07', name:'Luca Romano',      type:'Licensing',  image:'Snow Leopard Study',   status:'Replied',   value:'£180' },
+];
+
+const CLIENTS = [
+    { name:'Vogue UK',          gallery:'SS26 Campaign',    images:62, favourites:18, lastLogin:'2026-04-25', status:'Active'  },
+    { name:'National Geographic',gallery:'Highland Wildlife',images:94, favourites:41, lastLogin:'2026-04-24', status:'Active'  },
+    { name:'The Guardian',      gallery:'Urban Series',     images:38, favourites:12, lastLogin:'2026-04-22', status:'Active'  },
+    { name:'Smith Architecture',gallery:'Project Portfolio', images:45, favourites:22, lastLogin:'2026-04-20', status:'Active'  },
+    { name:'Wildspace Agency',  gallery:'Brand Campaign',   images:57, favourites:31, lastLogin:'2026-04-19', status:'Active'  },
+    { name:'Ember Studios',     gallery:'Abstract Series',  images:33, favourites:9,  lastLogin:'2026-04-14', status:'Inactive'},
+    { name:'Harper & Rhodes',   gallery:'Portrait Session', images:48, favourites:24, lastLogin:'2026-04-11', status:'Active'  },
+    { name:'Blue River Media',  gallery:'Wildlife Set',     images:71, favourites:38, lastLogin:'2026-04-08', status:'Review'  },
+];
+
+const TOP_IMAGES = [
+    { image:'Misty Highland Glen',   gallery:'Landscapes',   views:1840, lightbox:620, favourites:38, licences:14, revenue:'£1,960' },
+    { image:'Golden Hour Pier',      gallery:'Landscapes',   views:1420, lightbox:510, favourites:31, licences:9,  revenue:'£1,260' },
+    { image:'Barn Owl in Flight',    gallery:'Wildlife',     views:1180, lightbox:440, favourites:27, licences:8,  revenue:'£1,120' },
+    { image:'Urban Geometry #4',     gallery:'Architecture', views:980,  lightbox:320, favourites:19, licences:6,  revenue:'£720'   },
+    { image:'Portrait in Bloom',     gallery:'Portraits',    views:860,  lightbox:290, favourites:22, licences:5,  revenue:'£1,100' },
+    { image:'Abstract Waves III',    gallery:'Abstract',     views:740,  lightbox:240, favourites:14, licences:4,  revenue:'£560'   },
+    { image:'Snow Leopard Study',    gallery:'Wildlife',     views:690,  lightbox:220, favourites:18, licences:4,  revenue:'£520'   },
+    { image:'Moorland at Dawn',      gallery:'Landscapes',   views:620,  lightbox:190, favourites:11, licences:3,  revenue:'£840'   },
+];
+
+// ════════════════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════════════════
+
+function fmtCurrency(v) {
+    if (v >= 1000) return `£${(v/1000).toFixed(1)}k`;
+    return `£${v}`;
+}
+function fmtNum(v) {
+    if (v >= 1000) return `${(v/1000).toFixed(1)}k`;
+    return v.toLocaleString();
+}
+function fmtPct(v) { return `${v.toFixed(1)}%`; }
+
+function setKPI(id, val, chgText, dir) {
+    const el = document.getElementById(id);
+    const chgEl = document.getElementById(id+'-chg');
+    if (el) el.textContent = val;
+    if (chgEl) {
+        chgEl.textContent = chgText;
+        chgEl.className = 'kpi-change ' + (dir === '+' ? 'positive' : dir === '-' ? 'negative' : 'neutral');
+    }
+}
+
+function statusBadge(s) {
+    const map = {
+        'Completed':'badge-green','Converted':'badge-green',
+        'Pending':'badge-yellow','Review':'badge-yellow',
+        'Replied':'badge-blue',
+        'Inactive':'badge-grey','Active':'badge-green'
+    };
+    return `<span class="badge ${map[s]||'badge-grey'}">${s}</span>`;
+}
+
+// ════════════════════════════════════════════════
+// KPI CALCULATION
+// ════════════════════════════════════════════════
+
+function calcKPIs() {
+    const totalRev   = MONTHLY.reduce((s,m)=>s+m.revenue,0);
+    const totalVis   = MONTHLY.reduce((s,m)=>s+m.visitors,0);
+    const totalLic   = MONTHLY.reduce((s,m)=>s+m.licences,0);
+    const totalEnq   = MONTHLY.reduce((s,m)=>s+m.enquiries,0);
+    const conv       = (totalLic / totalEnq * 100);
+    const alv        = totalRev / totalLic;
+    const pending    = ENQUIRIES.filter(e=>e.status==='Pending').length;
+
+    setKPI('kpi-revenue',  fmtCurrency(totalRev),  '↑ +18.4% vs prior period', '+');
+    setKPI('kpi-visitors', fmtNum(totalVis),        '↑ +12.1% vs prior period', '+');
+    setKPI('kpi-licences', totalLic,                '↑ +6 vs prior period',     '+');
+    setKPI('kpi-enquiries',totalEnq,                '↑ +8 vs prior period',     '+');
+    setKPI('kpi-conv',     fmtPct(conv),            '↑ +1.2pp vs prior period', '+');
+    setKPI('kpi-alv',      fmtCurrency(Math.round(alv)), '↑ +£12 vs prior', '+');
+
+    const pEl = document.getElementById('insight-pending');
+    if (pEl) pEl.textContent = pending + ' open';
+
+    const eEl = document.getElementById('e-kpi-total');
+    if (eEl) eEl.textContent = totalEnq;
+
+    const sEl = document.getElementById('s-kpi-rev');
+    if (sEl) sEl.textContent = fmtCurrency(totalRev);
+
+    const aEl = document.getElementById('a-kpi-vis');
+    if (aEl) aEl.textContent = fmtNum(totalVis);
+}
+
+// ════════════════════════════════════════════════
+// CHARTS
+// ════════════════════════════════════════════════
+
+let charts = {};
+
+function destroyChart(id) {
+    if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+function buildChart(id, config) {
+    destroyChart(id);
+    const ctx = document.getElementById(id);
+    if (!ctx) return;
+    charts[id] = new Chart(ctx.getContext('2d'), config);
+}
+
+function initCharts() {
+    const months = MONTHLY.map(m=>m.month);
+
+    // Revenue + visitor trend (mixed)
+    buildChart('chart-revenue-trend', {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [
+                {
+                    label: 'Revenue (£)',
+                    data: MONTHLY.map(m=>m.revenue),
+                    backgroundColor: '#c9a96e44',
+                    borderColor: '#c9a96e',
+                    borderWidth: 2, borderRadius: 4,
+                    yAxisID: 'y',
+                },
+                {
+                    label: 'Visitors',
+                    data: MONTHLY.map(m=>m.visitors),
+                    type: 'line',
+                    borderColor: '#4C72B0',
+                    backgroundColor: '#4C72B020',
+                    borderWidth: 2, tension: 0.3,
+                    pointRadius: 4, fill: false,
+                    yAxisID: 'y1',
+                }
+            ]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false,
+            interaction:{ mode:'index', intersect:false },
+            plugins:{ legend:{ labels:{ usePointStyle:true } } },
+            scales: {
+                y:  { beginAtZero:true, position:'left',  ticks:{ callback:v=>'£'+v } },
+                y1: { beginAtZero:true, position:'right', grid:{ drawOnChartArea:false }, ticks:{ callback:v=>fmtNum(v) } }
+            }
+        }
+    });
+
+    // Licence type split
+    buildChart('chart-licence-split', {
+        type: 'doughnut',
+        data: {
+            labels: ['Commercial', 'Editorial', 'Fine Art Print'],
+            datasets: [{ data:[33, 38, 29], backgroundColor:['#c9a96eCC','#4C72B0CC','#55A868CC'], borderColor:'#fff', borderWidth:2 }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false, cutout:'62%',
+            plugins:{ legend:{ position:'right', labels:{ usePointStyle:true, padding:14 } } }
+        }
+    });
+
+    // Sales by type stacked bar
+    buildChart('chart-sales-type', {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [
+                { label:'Commercial', data:[3,2,4,5,6,7], backgroundColor:'#c9a96eCC', borderRadius:3 },
+                { label:'Editorial',  data:[3,3,5,6,7,8], backgroundColor:'#4C72B0CC', borderRadius:3 },
+                { label:'Fine Art',   data:[2,1,2,3,4,6], backgroundColor:'#55A868CC', borderRadius:3 },
+            ]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ labels:{ usePointStyle:true } } },
+            scales:{ x:{ stacked:true }, y:{ stacked:true, beginAtZero:true } }
+        }
+    });
+
+    // Revenue by gallery
+    const galleries = ['Landscapes','Wildlife','Architecture','Portraits','Abstract'];
+    buildChart('chart-rev-gallery', {
+        type: 'bar',
+        data: {
+            labels: galleries,
+            datasets: [{ label:'Revenue (£)', data:[4060,2180,1640,1280,860], backgroundColor: COLORS.map(c=>c+'CC'), borderRadius:4 }]
+        },
+        options: {
+            indexAxis:'y', responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ display:false } },
+            scales:{ x:{ beginAtZero:true, ticks:{ callback:v=>'£'+v } }, y:{ grid:{ display:false } } }
+        }
+    });
+
+    // Traffic sources
+    buildChart('chart-traffic-source', {
+        type: 'doughnut',
+        data: {
+            labels: ['Organic Search','Direct','Social','Referral','Email'],
+            datasets: [{ data:[38,22,18,14,8], backgroundColor:COLORS.map(c=>c+'CC'), borderColor:'#fff', borderWidth:2 }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false, cutout:'60%',
+            plugins:{ legend:{ position:'right', labels:{ usePointStyle:true, padding:12 } } }
+        }
+    });
+
+    // Geography
+    buildChart('chart-geography', {
+        type: 'bar',
+        data: {
+            labels: ['United Kingdom','United States','Germany','Australia','France','Canada','Netherlands','Sweden'],
+            datasets: [{ label:'Visitors', data:[4820,2340,1180,940,820,680,540,420], backgroundColor:'#4C72B0CC', borderRadius:3 }]
+        },
+        options: {
+            indexAxis:'y', responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ display:false } },
+            scales:{ x:{ beginAtZero:true }, y:{ grid:{ display:false } } }
+        }
+    });
+
+    // Device
+    buildChart('chart-device', {
+        type: 'doughnut',
+        data: {
+            labels: ['Desktop','Mobile','Tablet'],
+            datasets: [{ data:[52,36,12], backgroundColor:['#8172B3CC','#c9a96eCC','#55A868CC'], borderColor:'#fff', borderWidth:2 }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false, cutout:'60%',
+            plugins:{ legend:{ position:'right', labels:{ usePointStyle:true } } }
+        }
+    });
+
+    // Visitor trend
+    const weeks = ['W1 Feb','W2 Feb','W3 Feb','W4 Feb','W1 Mar','W2 Mar','W3 Mar','W4 Mar','W1 Apr','W2 Apr','W3 Apr','W4 Apr'];
+    buildChart('chart-visitor-trend', {
+        type: 'line',
+        data: {
+            labels: weeks,
+            datasets: [{
+                label:'Weekly Visitors',
+                data:[580,620,680,720,750,810,880,940,1020,1080,1140,1220],
+                borderColor:'#4C72B0', backgroundColor:'#4C72B020',
+                borderWidth:2, tension:0.35, fill:true, pointRadius:3
+            }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ display:false } },
+            scales:{ x:{ grid:{ display:false } }, y:{ beginAtZero:false } }
+        }
+    });
+
+    // Gallery views
+    buildChart('chart-gallery-views', {
+        type: 'bar',
+        data: {
+            labels: galleries,
+            datasets: [{ label:'Views', data:[4820,3140,2680,2180,1600], backgroundColor:COLORS.map(c=>c+'CC'), borderRadius:4 }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ display:false } },
+            scales:{ x:{ grid:{ display:false } }, y:{ beginAtZero:true } }
+        }
+    });
+
+    // Gallery conversion rate
+    buildChart('chart-gallery-conv', {
+        type: 'bar',
+        data: {
+            labels: galleries,
+            datasets: [{ label:'Lightbox→Enquiry %', data:[8.4,7.2,5.8,6.1,4.9], backgroundColor:'#c9a96eCC', borderRadius:4 }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ display:false } },
+            scales:{ x:{ grid:{ display:false } }, y:{ beginAtZero:true, ticks:{ callback:v=>v+'%' } } }
+        }
+    });
+
+    // Client logins
+    buildChart('chart-client-logins', {
+        type: 'line',
+        data: {
+            labels: ['W1','W2','W3','W4','W5','W6','W7','W8'],
+            datasets: [{
+                label:'Client Logins',
+                data:[12,14,18,16,22,19,24,23],
+                borderColor:'#c9a96e', backgroundColor:'#c9a96e20',
+                borderWidth:2, tension:0.3, fill:true, pointRadius:4
+            }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ display:false } },
+            scales:{ x:{ grid:{ display:false } }, y:{ beginAtZero:true } }
+        }
+    });
+
+    // Client favourites
+    buildChart('chart-client-favs', {
+        type: 'bar',
+        data: {
+            labels: CLIENTS.map(c=>c.name.split(' ').slice(0,2).join(' ')),
+            datasets: [{ label:'Favourited Images', data:CLIENTS.map(c=>c.favourites), backgroundColor:COLORS.map(c=>c+'CC'), borderRadius:4 }]
+        },
+        options: {
+            indexAxis:'y', responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ display:false } },
+            scales:{ x:{ beginAtZero:true }, y:{ grid:{ display:false } } }
+        }
+    });
+
+    // Enquiry volume
+    buildChart('chart-enq-volume', {
+        type: 'bar',
+        data: {
+            labels: weeks,
+            datasets: [
+                { label:'Licensing', data:[4,5,6,4,7,6,8,7,9,8,10,9], backgroundColor:'#c9a96eCC', borderRadius:3 },
+                { label:'General',   data:[2,3,2,4,3,2,4,3,3,4,2,3],  backgroundColor:'#4C72B0CC', borderRadius:3 },
+            ]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ labels:{ usePointStyle:true } } },
+            scales:{ x:{ stacked:true, grid:{ display:false } }, y:{ stacked:true, beginAtZero:true } }
+        }
+    });
+
+    // Enquiry type donut
+    buildChart('chart-enq-type', {
+        type: 'doughnut',
+        data: {
+            labels: ['Commercial Licensing','Editorial Licensing','Fine Art Print','General Contact','Client Request'],
+            datasets: [{ data:[28,22,13,15,11], backgroundColor:COLORS.map(c=>c+'CC'), borderColor:'#fff', borderWidth:2 }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false, cutout:'58%',
+            plugins:{ legend:{ position:'right', labels:{ usePointStyle:true, padding:12, font:{ size:11 } } } }
+        }
+    });
+}
+
+// ════════════════════════════════════════════════
+// TABLES
+// ════════════════════════════════════════════════
+
+function buildSalesTable() {
+    let html = '<table class="data-table"><thead><tr>';
+    ['Date','Image','Gallery','Type','Amount','Status'].forEach(h => html += `<th>${h}</th>`);
+    html += '</tr></thead><tbody>';
+    SALES.forEach(r => {
+        html += `<tr>
+            <td>${r.date}</td>
+            <td><strong>${r.image}</strong></td>
+            <td>${r.gallery}</td>
+            <td>${r.type}</td>
+            <td><strong>£${r.amount}</strong></td>
+            <td>${statusBadge(r.status)}</td>
+        </tr>`;
+    });
+    html += '</tbody></table>';
+    document.getElementById('sales-table').innerHTML = html;
+}
+
+function buildGalleryTable() {
+    let html = '<table class="data-table"><thead><tr>';
+    ['Image','Gallery','Views','Lightbox Opens','Favourites','Licences Sold','Revenue'].forEach(h => html += `<th>${h}</th>`);
+    html += '</tr></thead><tbody>';
+    TOP_IMAGES.forEach(r => {
+        html += `<tr>
+            <td><strong>${r.image}</strong></td>
+            <td>${r.gallery}</td>
+            <td>${r.views.toLocaleString()}</td>
+            <td>${r.lightbox.toLocaleString()}</td>
+            <td>⭐ ${r.favourites}</td>
+            <td>${r.licences}</td>
+            <td><strong>${r.revenue}</strong></td>
+        </tr>`;
+    });
+    html += '</tbody></table>';
+    document.getElementById('gallery-table').innerHTML = html;
+}
+
+function buildClientsTable() {
+    let html = '<table class="data-table"><thead><tr>';
+    ['Client','Gallery Name','Images','Favourites','Last Login','Status'].forEach(h => html += `<th>${h}</th>`);
+    html += '</tr></thead><tbody>';
+    CLIENTS.forEach(r => {
+        html += `<tr>
+            <td><strong>${r.name}</strong></td>
+            <td>${r.gallery}</td>
+            <td>${r.images}</td>
+            <td>⭐ ${r.favourites}</td>
+            <td>${r.lastLogin}</td>
+            <td>${statusBadge(r.status)}</td>
+        </tr>`;
+    });
+    html += '</tbody></table>';
+    document.getElementById('clients-table').innerHTML = html;
+}
+
+function buildEnquiriesTable() {
+    let html = '<table class="data-table"><thead><tr>';
+    ['Date','Name','Type','Image','Status','Est. Value'].forEach(h => html += `<th>${h}</th>`);
+    html += '</tr></thead><tbody>';
+    ENQUIRIES.forEach(r => {
+        html += `<tr>
+            <td>${r.date}</td>
+            <td><strong>${r.name}</strong></td>
+            <td>${r.type}</td>
+            <td>${r.image}</td>
+            <td>${statusBadge(r.status)}</td>
+            <td><strong>${r.value}</strong></td>
+        </tr>`;
+    });
+    html += '</tbody></table>';
+    document.getElementById('enquiries-table').innerHTML = html;
+}
+
+// ════════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════════
+
+function switchTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-'+name).classList.add('active');
+    event.target.classList.add('active');
+}
+
+function applyGlobalFilter() {
+    // In production this would re-query the DB and regenerate
+    // For now it triggers a subtle re-render to indicate activity
+    calcKPIs();
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+
+calcKPIs();
+initCharts();
+buildSalesTable();
+buildGalleryTable();
+buildClientsTable();
+buildEnquiriesTable();
+
+document.querySelector('.dashboard-footer span:first-child').style.color = '#c9a96e';
+
+</script>
+</body>
+</html>

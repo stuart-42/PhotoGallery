@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client gallery access · Wandering Light</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Wandering<span class="dot">·</span>Light</a>
+    <nav class="nav">
+      <a href="gallery.html">Galleries</a>
+      <a href="index.html#story">Story</a>
+      <a href="index.html#brands">For Brands</a>
+      <a href="private.html" class="cta">Client Login</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Entry split layout -->
+<section class="entry-page">
+  <div class="visual" style="background-image:url('https://picsum.photos/1600/1066?random=40');">
+  </div>
+  <div class="form-wrap">
+    <div class="entry-card">
+      <span class="eyebrow">Private client gallery</span>
+      <h1>Welcome back.</h1>
+      <p>Enter the email address that received your invitation. We'll send you a secure, single-use link to your collection — no password needed.</p>
+      <form onsubmit="event.preventDefault(); showSent();">
+        <label for="email">Your email</label>
+        <input type="email" id="email" required placeholder="you@brand.com" autocomplete="email">
+        <button type="submit" class="btn btn-primary">Send my gallery link →</button>
+      </form>
+      <p class="fine" id="hint">
+        Links expire 14 days after they're sent and can only be opened by the recipient.
+        Don't have an invitation yet? <a href="index.html#brands">Get in touch about a shoot →</a>
+      </p>
+      <div id="sent" style="display:none; padding: 16px 18px; background: var(--cream-deep); border-left: 3px solid var(--olive); margin-top: 24px; font-size: 14px; line-height: 1.6;">
+        <strong style="font-family: var(--serif); font-size: 1.1rem; font-style: italic;">Check your inbox.</strong><br>
+        We've sent a secure link to <span id="addr" style="color:var(--clay);"></span>. It will expire in 14 days.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Preview of what the locked client gallery looks like once they're in -->
+<section style="border-top: 1px solid var(--hairline); padding-top: 0;">
+  <div class="preview-banner">
+    <div>
+      <strong>Preview · what your gallery looks like once unlocked.</strong>
+      <span style="opacity:0.8; margin-left:12px;">Welcome, Petit Bateau · 124 images · Selection due 12 May</span>
+    </div>
+    <span class="pill">Private — Brand Client</span>
+  </div>
+
+  <div class="container" style="padding-top: 48px; padding-bottom: 24px;">
+    <div class="meta" style="display:flex;gap:24px;flex-wrap:wrap;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--clay-deep);margin-bottom:16px;">
+      <span>Petit Bateau · SS26 Campaign</span>
+      <span>Tuscany shoot · April 2026</span>
+      <span>124 photographs</span>
+    </div>
+    <h1 style="font-style:italic;font-size: clamp(2rem, 4vw, 3.4rem);max-width:18ch;margin-bottom:20px;">Your selection — choose your final 40.</h1>
+    <p style="max-width:60ch;color:rgba(31,27,23,0.75);margin-bottom: 8px;">Tap the heart on any image to add it to your selection. Leave a note for retouching by clicking <em>Comment</em>. Approved files become available for clean download once selection is finalised.</p>
+
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:24px;padding:16px 20px;background:var(--cream-deep);border-radius:4px;">
+      <span style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--clay-deep);">Your selection</span>
+      <strong style="font-size:1.4rem;font-family:var(--serif);">17 / 40</strong>
+      <div style="flex:1;height:6px;background:rgba(31,27,23,0.08);border-radius:100px;overflow:hidden;min-width:120px;">
+        <div style="width:42%;height:100%;background:var(--clay);"></div>
+      </div>
+      <button class="btn btn-ghost" style="padding:10px 18px;">Submit selection</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="justified" style="padding-top: 24px;">
+      <div class="tile span-5" style="background-image:url('https://picsum.photos/1200/800?random=10');"></div>
+      <div class="tile span-4" style="background-image:url('https://picsum.photos/1000/666?random=20');"></div>
+      <div class="tile span-3" style="background-image:url('https://picsum.photos/900/600?random=60');"></div>
+      <div class="tile span-4" style="background-image:url('https://picsum.photos/900/600?random=90');"></div>
+      <div class="tile span-4" style="background-image:url('https://picsum.photos/900/600?random=50');"></div>
+      <div class="tile span-4" style="background-image:url('https://picsum.photos/900/600?random=110');"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer" style="margin-top: 80px;">
+  <div class="container">
+    <div class="grid">
+      <div class="col">
+        <p class="lead"><em>Wandering Light</em></p>
+        <p class="muted" style="opacity:0.7;">Children, clothes, and the road — photographed slowly.</p>
+      </div>
+      <div class="col">
+        <h4>Galleries</h4>
+        <a href="gallery.html">Public collections</a>
+        <a href="private.html">Client login</a>
+        <a href="#">Licensing</a>
+      </div>
+      <div class="col">
+        <h4>About</h4>
+        <a href="index.html#story">Our story</a>
+        <a href="#">Travel diary</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="col">
+        <h4>For brands</h4>
+        <a href="index.html#brands">Services</a>
+        <a href="#">Past collaborations</a>
+        <a href="#">Request pack</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Wandering Light. All photographs subject to copyright.</span>
+      <span>Privacy · Licensing terms · Cookies</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Image protection
+  document.addEventListener('contextmenu', e => {
+    if (e.target.classList.contains('tile') || e.target.tagName === 'IMG' || e.target.classList.contains('visual')) {
+      e.preventDefault();
+    }
+  });
+  document.addEventListener('dragstart', e => e.preventDefault());
+
+  // Mock magic-link confirmation
+  function showSent() {
+    const v = document.getElementById('email').value || 'your address';
+    document.getElementById('addr').textContent = v;
+    document.getElementById('sent').style.display = 'block';
+    document.getElementById('hint').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
