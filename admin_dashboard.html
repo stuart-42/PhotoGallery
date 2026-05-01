@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self';">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Photography Business — Admin Dashboard</title>
+    <script>
+        // Mock auth gate — set flag before CSS parses to avoid flashing the login overlay
+        // for already-authed sessions. Real auth would happen server-side.
+        (function() {
+            try {
+                if (sessionStorage.getItem('wl-admin-auth') === 'ok') {
+                    document.documentElement.dataset.adminAuth = 'ok';
+                }
+            } catch (e) {}
+        })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
     <style>
         :root {
@@ -618,9 +631,191 @@
             .row-actions { flex-wrap: wrap; }
             .manage-header { align-items: flex-start; }
         }
+
+        /* ──────────────────────────────────────────────────────────
+           ADMIN LOGIN GATE (mock auth)
+           Full-page overlay shown until the studio password is entered.
+           Uses Wandering Light brand tokens, scoped to .admin-login so
+           they don't override the dashboard's :root above. */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+        .admin-login {
+            --wl-cream:      #FAF6EE;
+            --wl-cream-deep: #F2EBDD;
+            --wl-clay:       #B8755C;
+            --wl-clay-aa:    #7A4430;
+            --wl-clay-deep:  #6B3828;
+            --wl-ink:        #1F1B17;
+            --wl-hairline:   rgba(31, 27, 23, 0.12);
+            --wl-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+            --wl-sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--wl-cream);
+            color: var(--wl-ink);
+            font-family: var(--wl-sans);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: auto;
+        }
+        html[data-admin-auth="ok"] .admin-login { display: none; }
+        html:not([data-admin-auth="ok"]) body { overflow: hidden; }
+
+        .admin-login__visual {
+            background-image: url('https://picsum.photos/1600/1200?random=42');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .admin-login__visual::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(31,27,23,0) 0%, rgba(31,27,23,0.45) 100%);
+        }
+
+        .admin-login__form-wrap {
+            display: grid;
+            place-items: center;
+            padding: 96px clamp(24px, 4vw, 64px);
+            background: var(--wl-cream);
+        }
+
+        .admin-login__card { width: 100%; max-width: 420px; }
+
+        .admin-login__eyebrow {
+            display: block;
+            font-family: var(--wl-sans);
+            font-size: 11px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--wl-clay-deep);
+            margin-bottom: 24px;
+        }
+
+        .admin-login h1 {
+            font-family: var(--wl-serif);
+            font-weight: 400;
+            font-style: italic;
+            font-size: 2.6rem;
+            line-height: 1.1;
+            color: var(--wl-ink);
+            margin: 0 0 24px;
+            letter-spacing: 0.005em;
+        }
+
+        .admin-login p {
+            color: rgba(31, 27, 23, 0.72);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0 0 32px;
+        }
+
+        .admin-login form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .admin-login label {
+            font-family: var(--wl-sans);
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--wl-clay-deep);
+        }
+
+        .admin-login input[type="password"] {
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 14px 16px;
+            border: 1px solid var(--wl-hairline);
+            border-radius: 4px;
+            background: var(--wl-cream-deep);
+            color: var(--wl-ink);
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+            width: 100%;
+        }
+        .admin-login input[type="password"]:focus { border-color: var(--wl-clay); }
+        .admin-login.has-error input[type="password"] {
+            border-color: var(--wl-clay-aa);
+            background: #FAEDE6;
+        }
+
+        .admin-login__error {
+            display: none;
+            margin: 4px 0 0 !important;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--wl-clay-aa);
+            font-style: italic;
+        }
+        .admin-login.has-error .admin-login__error { display: block; }
+
+        .admin-login__btn {
+            font-family: var(--wl-sans);
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.04em;
+            padding: 14px 22px;
+            margin-top: 12px;
+            background: var(--wl-clay-aa);
+            color: var(--wl-cream);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .admin-login__btn:hover { background: var(--wl-clay-deep); }
+        .admin-login__btn:focus-visible {
+            outline: 2px solid var(--wl-clay-aa);
+            outline-offset: 3px;
+        }
+
+        .admin-login__fine {
+            margin-top: 28px !important;
+            font-size: 12px !important;
+            line-height: 1.55 !important;
+            color: rgba(31, 27, 23, 0.7) !important;
+        }
+        .admin-login__fine a {
+            color: var(--wl-clay-aa);
+            border-bottom: 1px solid var(--wl-clay);
+            text-decoration: none;
+        }
+
+        @media (max-width: 900px) {
+            .admin-login { grid-template-columns: 1fr; }
+            .admin-login__visual { display: none; }
+            .admin-login__form-wrap { padding: 56px 24px; }
+            .admin-login h1 { font-size: 2.1rem; }
+        }
     </style>
 </head>
 <body>
+
+<!-- Mock auth gate — shown until correct password (sessionStorage) -->
+<div class="admin-login" id="adminLogin" role="dialog" aria-modal="true" aria-labelledby="adminLoginTitle">
+    <div class="admin-login__visual" aria-hidden="true"></div>
+    <div class="admin-login__form-wrap">
+        <div class="admin-login__card">
+            <span class="admin-login__eyebrow">Wandering · Light</span>
+            <h1 id="adminLoginTitle">Studio dashboard.</h1>
+            <p>This area is restricted to the studio team. Enter the dashboard password to continue.</p>
+            <form id="adminLoginForm" method="post" action="#" autocomplete="off" novalidate>
+                <label for="adminPassword">Password</label>
+                <input type="password" id="adminPassword" required autocomplete="current-password" autofocus>
+                <p class="admin-login__error" id="adminLoginError" role="alert" aria-live="polite">That password didn't match. Please try again.</p>
+                <button type="submit" class="admin-login__btn">Enter dashboard →</button>
+            </form>
+            <p class="admin-login__fine">
+                Sessions remain open until the browser is closed. Lost the password? <a href="index.html">Return to the site →</a>
+            </p>
+        </div>
+    </div>
+</div>
 
 <header class="dashboard-header">
     <div class="header-left">
@@ -656,12 +851,11 @@
 </header>
 
 <nav class="nav-tabs">
-    <div class="nav-tab active" onclick="switchTab('overview')">📊 Overview</div>
-    <div class="nav-tab" onclick="switchTab('sales')">💰 Sales & Licensing</div>
-    <div class="nav-tab" onclick="switchTab('audience')">👥 Audience</div>
-    <div class="nav-tab" onclick="switchTab('gallery')">🖼 Gallery Performance</div>
-    <div class="nav-tab" onclick="switchTab('clients')">🔐 Private Clients</div>
-    <div class="nav-tab" onclick="switchTab('enquiries')">✉️ Enquiries</div>
+    <div class="nav-tab active" onclick="switchTab('overview', event)">📊 Overview</div>
+    <div class="nav-tab" onclick="switchTab('sales', event)">💰 Sales & Licensing</div>
+    <div class="nav-tab" onclick="switchTab('gallery', event)">🖼 Gallery Performance</div>
+    <div class="nav-tab" onclick="switchTab('clients', event)">🔐 Private Clients</div>
+    <div class="nav-tab" onclick="switchTab('enquiries', event)">✉️ Enquiries</div>
 </nav>
 
 <div class="dashboard-body">
@@ -814,63 +1008,7 @@
     </div>
 
     <!-- ══════════════════════════════════════════ -->
-    <!-- TAB 3: AUDIENCE                           -->
-    <!-- ══════════════════════════════════════════ -->
-    <div class="tab-panel" id="tab-audience">
-
-        <div class="kpi-row">
-            <div class="kpi-card blue">
-                <div class="kpi-label">Total Visitors</div>
-                <div class="kpi-value" id="a-kpi-vis">—</div>
-                <div class="kpi-change positive">↑ +12.1% vs prior</div>
-            </div>
-            <div class="kpi-card accent">
-                <div class="kpi-label">Avg Session Duration</div>
-                <div class="kpi-value">3m 42s</div>
-                <div class="kpi-change positive">↑ +28s vs prior</div>
-            </div>
-            <div class="kpi-card green">
-                <div class="kpi-label">Pages per Session</div>
-                <div class="kpi-value">4.8</div>
-                <div class="kpi-change positive">↑ +0.6 vs prior</div>
-            </div>
-            <div class="kpi-card purple">
-                <div class="kpi-label">Return Visitor Rate</div>
-                <div class="kpi-value">31.4%</div>
-                <div class="kpi-change positive">↑ +4.2% vs prior</div>
-            </div>
-            <div class="kpi-card red">
-                <div class="kpi-label">Bounce Rate</div>
-                <div class="kpi-value">38.7%</div>
-                <div class="kpi-change positive">↓ 3.1% (improved)</div>
-            </div>
-        </div>
-
-        <div class="chart-row">
-            <div class="chart-container">
-                <div class="chart-title" style="margin-bottom:14px">Traffic Sources</div>
-                <canvas id="chart-traffic-source"></canvas>
-            </div>
-            <div class="chart-container">
-                <div class="chart-title" style="margin-bottom:14px">Visitor Geography (Top Countries)</div>
-                <canvas id="chart-geography"></canvas>
-            </div>
-            <div class="chart-container">
-                <div class="chart-title" style="margin-bottom:14px">Device Type</div>
-                <canvas id="chart-device"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-row">
-            <div class="chart-container wide">
-                <div class="chart-title" style="margin-bottom:14px">Weekly Visitor Trend</div>
-                <canvas id="chart-visitor-trend"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════ -->
-    <!-- TAB 4: GALLERY PERFORMANCE                -->
+    <!-- TAB 3: GALLERY PERFORMANCE                -->
     <!-- ══════════════════════════════════════════ -->
     <div class="tab-panel" id="tab-gallery">
 
@@ -1109,11 +1247,89 @@
                     </select>
                     <div class="hint">Only the assigned client will be able to access this gallery.</div>
                 </div>
+                <div class="form-row">
+                    <label>Status</label>
+                    <div class="toggle-group">
+                        <input type="radio" id="cg-status-draft" name="cg-status" value="Draft" checked>
+                        <label for="cg-status-draft">Draft</label>
+                        <input type="radio" id="cg-status-published" name="cg-status" value="Published">
+                        <label for="cg-status-published">Published</label>
+                    </div>
+                    <div class="hint">Draft galleries are invisible to visitors until published.</div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
             <button class="btn-admin ghost" type="button" onclick="closeCreateGalleryModal()">Cancel</button>
             <button class="btn-admin primary" type="button" onclick="submitCreateGallery()">Create Gallery</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- EDIT GALLERY MODAL                         -->
+<!-- ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-edit-gallery" onclick="if(event.target===this)closeEditGalleryModal()">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="eg-title">
+        <div class="modal-header">
+            <div>
+                <div class="modal-title" id="eg-title">Edit Gallery</div>
+                <div class="modal-sub" id="eg-sub">Update gallery details and publish settings.</div>
+            </div>
+            <button class="modal-close" type="button" onclick="closeEditGalleryModal()" aria-label="Close">×</button>
+        </div>
+        <div class="modal-body">
+            <form id="form-edit-gallery" onsubmit="event.preventDefault(); submitEditGallery();">
+                <input type="hidden" id="eg-id">
+                <div class="form-row">
+                    <label for="eg-name">Gallery Name</label>
+                    <input type="text" id="eg-name" required>
+                </div>
+                <div class="form-row">
+                    <label>Type</label>
+                    <div class="toggle-group">
+                        <input type="radio" id="eg-type-public" name="eg-type" value="Public" onchange="toggleEditClientField()">
+                        <label for="eg-type-public">🌐 Public</label>
+                        <input type="radio" id="eg-type-private" name="eg-type" value="Private" onchange="toggleEditClientField()">
+                        <label for="eg-type-private">🔒 Private</label>
+                    </div>
+                    <div class="hint">Public galleries appear on the site; private ones require an invitation.</div>
+                </div>
+                <div class="form-row">
+                    <label for="eg-theme">Theme / Description</label>
+                    <textarea id="eg-theme"></textarea>
+                </div>
+                <div class="form-row client-only" id="eg-client-row">
+                    <label for="eg-client">Client Assignment</label>
+                    <select id="eg-client">
+                        <option value="">— Select a client —</option>
+                        <option>Vogue UK</option>
+                        <option>National Geographic</option>
+                        <option>The Guardian</option>
+                        <option>Smith Architecture</option>
+                        <option>Wildspace Agency</option>
+                        <option>Harper &amp; Rhodes</option>
+                        <option>Blue River Media</option>
+                        <option>Petit Bateau</option>
+                        <option>Bonpoint</option>
+                    </select>
+                    <div class="hint">Only the assigned client will be able to access this gallery.</div>
+                </div>
+                <div class="form-row">
+                    <label>Status</label>
+                    <div class="toggle-group">
+                        <input type="radio" id="eg-status-draft" name="eg-status" value="Draft">
+                        <label for="eg-status-draft">Draft</label>
+                        <input type="radio" id="eg-status-published" name="eg-status" value="Published">
+                        <label for="eg-status-published">Published</label>
+                    </div>
+                    <div class="hint">Draft galleries are invisible to visitors until published.</div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin ghost" type="button" onclick="closeEditGalleryModal()">Cancel</button>
+            <button class="btn-admin primary" type="button" onclick="submitEditGallery()">Save Changes</button>
         </div>
     </div>
 </div>
@@ -1246,7 +1462,7 @@ function statusBadge(s) {
         'Replied':'badge-blue',
         'Inactive':'badge-grey','Active':'badge-green'
     };
-    return `<span class="badge ${map[s]||'badge-grey'}">${s}</span>`;
+    return `<span class="badge ${map[s]||'badge-grey'}">${escapeHtml(s)}</span>`;
 }
 
 // ════════════════════════════════════════════════
@@ -1278,8 +1494,6 @@ function calcKPIs() {
     const sEl = document.getElementById('s-kpi-rev');
     if (sEl) sEl.textContent = fmtCurrency(totalRev);
 
-    const aEl = document.getElementById('a-kpi-vis');
-    if (aEl) aEl.textContent = fmtNum(totalVis);
 }
 
 // ════════════════════════════════════════════════
@@ -1385,66 +1599,6 @@ function initCharts() {
         }
     });
 
-    // Traffic sources
-    buildChart('chart-traffic-source', {
-        type: 'doughnut',
-        data: {
-            labels: ['Organic Search','Direct','Social','Referral','Email'],
-            datasets: [{ data:[38,22,18,14,8], backgroundColor:COLORS.map(c=>c+'CC'), borderColor:'#fff', borderWidth:2 }]
-        },
-        options: {
-            responsive:true, maintainAspectRatio:false, cutout:'60%',
-            plugins:{ legend:{ position:'right', labels:{ usePointStyle:true, padding:12 } } }
-        }
-    });
-
-    // Geography
-    buildChart('chart-geography', {
-        type: 'bar',
-        data: {
-            labels: ['United Kingdom','United States','Germany','Australia','France','Canada','Netherlands','Sweden'],
-            datasets: [{ label:'Visitors', data:[4820,2340,1180,940,820,680,540,420], backgroundColor:'#4C72B0CC', borderRadius:3 }]
-        },
-        options: {
-            indexAxis:'y', responsive:true, maintainAspectRatio:false,
-            plugins:{ legend:{ display:false } },
-            scales:{ x:{ beginAtZero:true }, y:{ grid:{ display:false } } }
-        }
-    });
-
-    // Device
-    buildChart('chart-device', {
-        type: 'doughnut',
-        data: {
-            labels: ['Desktop','Mobile','Tablet'],
-            datasets: [{ data:[52,36,12], backgroundColor:['#8172B3CC','#c9a96eCC','#55A868CC'], borderColor:'#fff', borderWidth:2 }]
-        },
-        options: {
-            responsive:true, maintainAspectRatio:false, cutout:'60%',
-            plugins:{ legend:{ position:'right', labels:{ usePointStyle:true } } }
-        }
-    });
-
-    // Visitor trend
-    const weeks = ['W1 Feb','W2 Feb','W3 Feb','W4 Feb','W1 Mar','W2 Mar','W3 Mar','W4 Mar','W1 Apr','W2 Apr','W3 Apr','W4 Apr'];
-    buildChart('chart-visitor-trend', {
-        type: 'line',
-        data: {
-            labels: weeks,
-            datasets: [{
-                label:'Weekly Visitors',
-                data:[580,620,680,720,750,810,880,940,1020,1080,1140,1220],
-                borderColor:'#4C72B0', backgroundColor:'#4C72B020',
-                borderWidth:2, tension:0.35, fill:true, pointRadius:3
-            }]
-        },
-        options: {
-            responsive:true, maintainAspectRatio:false,
-            plugins:{ legend:{ display:false } },
-            scales:{ x:{ grid:{ display:false } }, y:{ beginAtZero:false } }
-        }
-    });
-
     // Gallery views
     buildChart('chart-gallery-views', {
         type: 'bar',
@@ -1547,11 +1701,11 @@ function buildSalesTable() {
     html += '</tr></thead><tbody>';
     SALES.forEach(r => {
         html += `<tr>
-            <td>${r.date}</td>
-            <td><strong>${r.image}</strong></td>
-            <td>${r.gallery}</td>
-            <td>${r.type}</td>
-            <td><strong>£${r.amount}</strong></td>
+            <td>${escapeHtml(r.date)}</td>
+            <td><strong>${escapeHtml(r.image)}</strong></td>
+            <td>${escapeHtml(r.gallery)}</td>
+            <td>${escapeHtml(r.type)}</td>
+            <td><strong>£${escapeHtml(String(r.amount))}</strong></td>
             <td>${statusBadge(r.status)}</td>
         </tr>`;
     });
@@ -1565,13 +1719,13 @@ function buildGalleryTable() {
     html += '</tr></thead><tbody>';
     TOP_IMAGES.forEach(r => {
         html += `<tr>
-            <td><strong>${r.image}</strong></td>
-            <td>${r.gallery}</td>
+            <td><strong>${escapeHtml(r.image)}</strong></td>
+            <td>${escapeHtml(r.gallery)}</td>
             <td>${r.views.toLocaleString()}</td>
             <td>${r.lightbox.toLocaleString()}</td>
             <td>⭐ ${r.favourites}</td>
             <td>${r.licences}</td>
-            <td><strong>${r.revenue}</strong></td>
+            <td><strong>${escapeHtml(r.revenue)}</strong></td>
         </tr>`;
     });
     html += '</tbody></table>';
@@ -1584,11 +1738,11 @@ function buildClientsTable() {
     html += '</tr></thead><tbody>';
     CLIENTS.forEach(r => {
         html += `<tr>
-            <td><strong>${r.name}</strong></td>
-            <td>${r.gallery}</td>
+            <td><strong>${escapeHtml(r.name)}</strong></td>
+            <td>${escapeHtml(r.gallery)}</td>
             <td>${r.images}</td>
             <td>⭐ ${r.favourites}</td>
-            <td>${r.lastLogin}</td>
+            <td>${escapeHtml(r.lastLogin)}</td>
             <td>${statusBadge(r.status)}</td>
         </tr>`;
     });
@@ -1602,12 +1756,12 @@ function buildEnquiriesTable() {
     html += '</tr></thead><tbody>';
     ENQUIRIES.forEach(r => {
         html += `<tr>
-            <td>${r.date}</td>
-            <td><strong>${r.name}</strong></td>
-            <td>${r.type}</td>
-            <td>${r.image}</td>
+            <td>${escapeHtml(r.date)}</td>
+            <td><strong>${escapeHtml(r.name)}</strong></td>
+            <td>${escapeHtml(r.type)}</td>
+            <td>${escapeHtml(r.image)}</td>
             <td>${statusBadge(r.status)}</td>
-            <td><strong>${r.value}</strong></td>
+            <td><strong>${escapeHtml(r.value)}</strong></td>
         </tr>`;
     });
     html += '</tbody></table>';
@@ -1618,11 +1772,11 @@ function buildEnquiriesTable() {
 // TAB SWITCHING
 // ════════════════════════════════════════════════
 
-function switchTab(name) {
+function switchTab(name, evt) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     document.getElementById('tab-'+name).classList.add('active');
-    event.target.classList.add('active');
+    evt.currentTarget.classList.add('active');
 }
 
 function applyGlobalFilter() {
@@ -1725,12 +1879,12 @@ function submitCreateGallery() {
     const type = document.querySelector('input[name="cg-type"]:checked').value;
     const theme = document.getElementById('cg-theme').value.trim();
     const client = type === 'Private' ? document.getElementById('cg-client').value || null : null;
+    const status = document.querySelector('input[name="cg-status"]:checked').value;
     const today = new Date().toISOString().slice(0,10);
     GALLERIES.unshift({
         id: nextGalleryId++,
-        name, type, theme, client,
+        name, type, theme, client, status,
         images: 0,
-        status: 'Draft',
         updated: today,
     });
     buildGalleriesTable();
@@ -1741,13 +1895,51 @@ function submitCreateGallery() {
 function editGallery(id) {
     const g = GALLERIES.find(x => x.id === id);
     if (!g) return;
-    alert(`Edit gallery: "${g.name}"\n\n(In production this would open the gallery editor with the full image list, metadata fields, and publish controls.)`);
+    document.getElementById('eg-id').value = id;
+    document.getElementById('eg-name').value = g.name;
+    document.getElementById('eg-theme').value = g.theme || '';
+    const isPrivate = g.type === 'Private';
+    document.getElementById(isPrivate ? 'eg-type-private' : 'eg-type-public').checked = true;
+    toggleEditClientField();
+    if (isPrivate && g.client) {
+        const sel = document.getElementById('eg-client');
+        const opt = Array.from(sel.options).find(o => o.value === g.client);
+        if (opt) sel.value = g.client;
+    }
+    document.getElementById(g.status === 'Published' ? 'eg-status-published' : 'eg-status-draft').checked = true;
+    document.getElementById('eg-sub').textContent = `Editing: ${g.name}`;
+    document.getElementById('modal-edit-gallery').classList.add('open');
+    setTimeout(() => document.getElementById('eg-name').focus(), 100);
 }
+function closeEditGalleryModal() {
+    document.getElementById('modal-edit-gallery').classList.remove('open');
+}
+function toggleEditClientField() {
+    const isPrivate = document.getElementById('eg-type-private').checked;
+    document.getElementById('eg-client-row').classList.toggle('show', isPrivate);
+}
+function submitEditGallery() {
+    const nameEl = document.getElementById('eg-name');
+    const name = nameEl.value.trim();
+    if (!name) { nameEl.focus(); return; }
+    const id = parseInt(document.getElementById('eg-id').value, 10);
+    const g = GALLERIES.find(x => x.id === id);
+    if (!g) return;
+    g.name   = name;
+    g.type   = document.querySelector('input[name="eg-type"]:checked').value;
+    g.theme  = document.getElementById('eg-theme').value.trim();
+    g.client = g.type === 'Private' ? document.getElementById('eg-client').value || null : null;
+    g.status = document.querySelector('input[name="eg-status"]:checked').value;
+    g.updated = new Date().toISOString().slice(0, 10);
+    buildGalleriesTable();
+    closeEditGalleryModal();
+}
+
 function viewGallery(id) {
     const g = GALLERIES.find(x => x.id === id);
     if (!g) return;
     const url = g.type === 'Private' ? '/private/' + g.id : '/galleries/' + g.id;
-    alert(`View gallery: "${g.name}"\n\n(In production this would open ${url} in a new tab.)`);
+    window.open(url, '_blank');
 }
 function deleteGallery(id) {
     const g = GALLERIES.find(x => x.id === id);
@@ -1841,11 +2033,11 @@ function handleFiles(files) {
 function renderThumbs() {
     const grid = document.getElementById('thumb-grid');
     grid.innerHTML = pendingUploads.map(u => `
-        <div class="thumb-card${u.isHero ? ' is-hero' : ''}" data-id="${u.id}">
-            <div class="img" style="background-image:url('${u.src}');"></div>
+        <div class="thumb-card${u.isHero ? ' is-hero' : ''}" data-id="${escapeHtml(u.id)}">
+            <div class="img" style="background-image:url('${escapeHtml(u.src)}');"></div>
             <div class="actions">
-                <button class="thumb-hero-toggle${u.isHero ? ' is-hero' : ''}" onclick="toggleHero('${u.id}')">${u.isHero ? '★ Hero' : '☆ Set Hero'}</button>
-                <button class="thumb-remove" onclick="removeThumb('${u.id}')" title="Remove">×</button>
+                <button class="thumb-hero-toggle${u.isHero ? ' is-hero' : ''}" data-action="hero" data-id="${escapeHtml(u.id)}">${u.isHero ? '★ Hero' : '☆ Set Hero'}</button>
+                <button class="thumb-remove" data-action="remove" data-id="${escapeHtml(u.id)}" title="Remove">×</button>
             </div>
         </div>
     `).join('');
@@ -1893,12 +2085,67 @@ function finishUpload() {
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
         closeCreateGalleryModal();
+        closeEditGalleryModal();
         closeUploadModal();
     }
 });
 
 buildGalleriesTable();
 setupDropzone();
+
+// Delegated listener for thumb-grid — avoids inline onclick with string-interpolated IDs
+document.getElementById('thumb-grid').addEventListener('click', e => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (btn.dataset.action === 'hero')   toggleHero(id);
+    if (btn.dataset.action === 'remove') removeThumb(id);
+});
+
+// ════════════════════════════════════════════════
+// MOCK AUTH GATE
+// Client-side only — intentional prototype limitation.
+// The password hash below is SHA-256('wandering2026'). The plaintext is not
+// stored in source. Replace this entire block with server-side session auth
+// before going to production — client-side auth can always be bypassed via
+// DevTools regardless of hashing.
+// ════════════════════════════════════════════════
+(function() {
+    // SHA-256 of the studio password. Change the hash when rotating the password.
+    const PW_HASH = 'ee5587f2f39e03566d9afcea6e5d3481da6a909e301130e02291847ed864bea3';
+
+    const overlay = document.getElementById('adminLogin');
+    const form    = document.getElementById('adminLoginForm');
+    const input   = document.getElementById('adminPassword');
+    if (!overlay || !form || !input) return;
+
+    // If already authed (flag set by inline head script), nothing to do.
+    if (document.documentElement.dataset.adminAuth === 'ok') return;
+
+    // Focus the password field on load.
+    requestAnimationFrame(() => input.focus());
+
+    // Clear error styling once the user starts typing again.
+    input.addEventListener('input', () => overlay.classList.remove('has-error'));
+
+    async function hashInput(str) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const hash = await hashInput(input.value);
+        if (hash === PW_HASH) {
+            try { sessionStorage.setItem('wl-admin-auth', 'ok'); } catch (err) {}
+            document.documentElement.dataset.adminAuth = 'ok';
+            input.value = '';
+        } else {
+            overlay.classList.add('has-error');
+            input.select();
+        }
+    });
+})();
 
 </script>
 </body>

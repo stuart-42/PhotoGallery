@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Licence enquiry · Wandering Light</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.enquiry-wrap {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: var(--s7) var(--gutter) var(--s8);
+}
+
+.eq-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+
+.eq-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eq-field label {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--clay-deep);
+  font-weight: 500;
+  font-family: var(--sans);
+}
+
+.eq-field label .req {
+  color: var(--clay-aa);
+  margin-left: 2px;
+}
+
+.eq-field input,
+.eq-field select,
+.eq-field textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 14px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--cream-deep);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.eq-field input:focus,
+.eq-field select:focus,
+.eq-field textarea:focus {
+  border-color: var(--clay);
+}
+
+.eq-field input[readonly] {
+  color: rgba(31,27,23,0.5);
+  cursor: default;
+}
+
+.eq-field textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.eq-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231F1B17' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.eq-submit {
+  margin-top: var(--s2);
+}
+
+.eq-submit .btn { font-family: var(--sans); }
+
+/* Confirmation */
+.eq-confirm {
+  display: none;
+  padding: 36px 40px;
+  background: var(--cream-deep);
+  border-left: 3px solid var(--olive);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  outline: none;
+}
+
+.eq-confirm h2 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 2rem;
+  margin-bottom: var(--s2);
+  color: var(--ink);
+}
+
+.eq-confirm p {
+  font-size: 15px;
+  color: rgba(31,27,23,0.72);
+  line-height: 1.6;
+  margin-bottom: var(--s3);
+}
+
+.eq-confirm a {
+  font-size: 13px;
+  color: var(--clay-aa);
+  border-bottom: 1px solid var(--clay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq-field input,
+  .eq-field select,
+  .eq-field textarea { transition: none; }
+}
+
+@media (max-width: 600px) {
+  .enquiry-wrap { padding-top: var(--s6); padding-bottom: var(--s7); }
+  .eq-confirm { padding: 28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Wandering<span class="dot">·</span>Light</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="primary-nav">
+      <a href="gallery-a.html">Galleries</a>
+      <a href="story.html">Story</a>
+      <a href="index.html#brands">For Brands</a>
+      <a href="private.html" class="cta">Client Login</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Page head -->
+<section class="gallery-head">
+  <div class="container">
+    <div class="meta">
+      <span>Licensing</span>
+    </div>
+    <h1>Licence enquiry.</h1>
+    <p>Fill in the form below and we'll respond within 48 hours with a quote and next steps. Clean, watermark-free files are delivered after licence confirmation.</p>
+  </div>
+</section>
+
+<!-- Enquiry form -->
+<div class="container">
+  <div class="enquiry-wrap">
+
+    <div id="eq-confirm" class="eq-confirm" role="alert" tabindex="-1">
+      <h2>Thank you.</h2>
+      <p>Stuart will be in touch within 48 hours.</p>
+      <a href="gallery-a.html">← Back to galleries</a>
+    </div>
+
+    <form id="eq-form" class="eq-form" method="post" action="#">
+
+      <div class="eq-field">
+        <label for="eq-name">Full name <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="eq-name" name="name" required autocomplete="name" placeholder="Your name">
+      </div>
+
+      <div class="eq-field">
+        <label for="eq-email">Email address <span class="req" aria-hidden="true">*</span></label>
+        <input type="email" id="eq-email" name="email" required autocomplete="email" placeholder="you@example.com">
+      </div>
+
+      <div class="eq-field">
+        <label for="eq-use">Intended use <span class="req" aria-hidden="true">*</span></label>
+        <select id="eq-use" name="intended_use" required>
+          <option value="" disabled selected>Select a use…</option>
+          <option value="personal">Personal print</option>
+          <option value="editorial">Editorial</option>
+          <option value="commercial">Commercial / Brand</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="eq-field">
+        <label for="eq-ref">Image reference</label>
+        <input type="text" id="eq-ref" name="image_ref" readonly placeholder="No image selected">
+      </div>
+
+      <div class="eq-field">
+        <label for="eq-notes">Notes / additional context</label>
+        <textarea id="eq-notes" name="notes" placeholder="Print size, publication, campaign dates, usage territory…"></textarea>
+      </div>
+
+      <div class="eq-submit">
+        <button type="submit" class="btn btn-primary">Send enquiry →</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="grid">
+      <div class="col">
+        <p class="lead"><em>Wandering Light</em></p>
+        <p>Children, clothes, and the road — photographed slowly.</p>
+      </div>
+      <div class="col">
+        <h4>Galleries</h4>
+        <a href="gallery-a.html">Tuscany · Olive groves</a>
+        <a href="gallery-b.html">Lisbon · Tiles &amp; sun</a>
+        <a href="gallery-d.html">Scottish Coast · Grey skies</a>
+        <a href="private.html">Client login</a>
+        <a href="#">Licensing</a>
+      </div>
+      <div class="col">
+        <h4>About</h4>
+        <a href="story.html">Our story</a>
+        <a href="#">Travel diary</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="col">
+        <h4>For brands</h4>
+        <a href="index.html#brands">Services</a>
+        <a href="#">Past collaborations</a>
+        <a href="#">Request pack</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Wandering Light. All photographs subject to copyright.</span>
+      <span>Privacy · Licensing terms · Cookies</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Image protection
+  document.addEventListener('contextmenu', e => {
+    if (e.target.classList.contains('tile') || e.target.tagName === 'IMG') {
+      e.preventDefault();
+    }
+  });
+  document.addEventListener('dragstart', e => e.preventDefault());
+
+  // Mobile nav toggle
+  (function() {
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('primary-nav');
+    const header = document.querySelector('.site-header');
+    if (!toggle || !nav || !header) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+    nav.addEventListener('click', e => {
+      if (e.target.tagName === 'A') setOpen(false);
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    document.addEventListener('click', e => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      if (header.contains(e.target)) return;
+      setOpen(false);
+    });
+  })();
+
+  // Pre-fill image reference from URL params
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const imageTitle = params.get('image');
+    const isBatch    = params.get('batch') === 'true';
+    const refInput   = document.getElementById('eq-ref');
+
+    if (imageTitle) {
+      refInput.value = imageTitle;
+    } else if (isBatch) {
+      refInput.value = 'Multiple images selected';
+    }
+  })();
+
+  // Submit → show confirmation, hide form
+  document.getElementById('eq-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    const confirm = document.getElementById('eq-confirm');
+    confirm.style.display = 'block';
+    confirm.focus();
+  });
+</script>
+
+</body>
+</html>

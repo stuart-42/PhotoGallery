@@ -18,7 +18,6 @@
   opacity: 0;
   transition: opacity 0.15s;
 }
-/* show on tile hover OR when this tile's checkbox is checked */
 .tile:hover .tile-check-wrap,
 .tile.is-selected .tile-check-wrap { opacity: 1; }
 
@@ -38,7 +37,6 @@
   background: var(--clay-aa);
   border-color: var(--clay-aa);
 }
-/* checkmark via box-shadow trick — no external SVG needed */
 .tile-check-wrap input[type="checkbox"]:checked::after {
   content: '';
   display: block;
@@ -50,7 +48,6 @@
   transform: rotate(45deg) translate(2px, -1px);
   margin: 2px auto 0;
 }
-/* outline the tile when selected */
 .tile.is-selected { outline: 2px solid var(--clay-aa); outline-offset: -2px; }
 
 /* ── Request this image button (lightbox) ────────────────── */
@@ -171,11 +168,11 @@
          style="background-image:url('https://picsum.photos/1000/666?random=20');"></div>
     <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=50" data-title="The long road home" data-cap="Cypress avenue, San Quirico."
          style="background-image:url('https://picsum.photos/900/600?random=50');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=90" data-title="Tomatoes & terracotta" data-cap="Farmhouse kitchen, Montepulciano."
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=90" data-title="Tomatoes &amp; terracotta" data-cap="Farmhouse kitchen, Montepulciano."
          style="background-image:url('https://picsum.photos/900/600?random=90');"></div>
     <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=60" data-title="Hand-in-hand" data-cap="Walking to market, dawn."
          style="background-image:url('https://picsum.photos/900/600?random=60');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=110" data-title="Stone & shadow" data-cap="Chapel courtyard, late afternoon."
+    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=110" data-title="Stone &amp; shadow" data-cap="Chapel courtyard, late afternoon."
          style="background-image:url('https://picsum.photos/1200/800?random=110');"></div>
     <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=80" data-title="Field in flower" data-cap="Wildflowers, end of April."
          style="background-image:url('https://picsum.photos/1200/800?random=80');"></div>
@@ -313,7 +310,6 @@
       photo.style.backgroundImage = `url('${safeCssUrl(t.dataset.img)}')`;
       title.textContent = t.dataset.title;
       cap.textContent   = t.dataset.cap;
-      // Update "Request this image" link with the current image title
       if (reqBtn) reqBtn.href = 'enquiry.html?image=' + encodeURIComponent(t.dataset.title || '');
       lb.classList.add('open');
     });
@@ -324,7 +320,6 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
   // ── Tile checkboxes ───────────────────────────────────────
-  // Injected via JS so the tile HTML stays clean.
   const bar        = document.getElementById('selection-bar');
   const barCount   = document.getElementById('bar-count');
   const barClear   = document.getElementById('bar-clear');
@@ -359,7 +354,6 @@
     wrap.appendChild(cb);
     tile.appendChild(wrap);
 
-    // Stop click on the checkbox from bubbling to the tile's lightbox handler
     wrap.addEventListener('click', e => e.stopPropagation());
 
     cb.addEventListener('change', () => {
@@ -368,10 +362,8 @@
     });
   });
 
-  // Clear button in the bar
   barClear.addEventListener('click', clearAll);
 
-  // "Request selected" navigates to enquiry page then clears
   barRequest.addEventListener('click', e => {
     e.preventDefault();
     const dest = barRequest.href;

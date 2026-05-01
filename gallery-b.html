@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Olive groves and linen — Tuscany, Spring 2026 · Wandering Light</title>
+<title>Tiles, salt and sun — Lisbon, Winter 2026 · Wandering Light</title>
 <link rel="stylesheet" href="styles.css">
 <style>
 /* ── Tile selection checkbox ─────────────────────────────── */
@@ -18,7 +18,6 @@
   opacity: 0;
   transition: opacity 0.15s;
 }
-/* show on tile hover OR when this tile's checkbox is checked */
 .tile:hover .tile-check-wrap,
 .tile.is-selected .tile-check-wrap { opacity: 1; }
 
@@ -38,7 +37,6 @@
   background: var(--clay-aa);
   border-color: var(--clay-aa);
 }
-/* checkmark via box-shadow trick — no external SVG needed */
 .tile-check-wrap input[type="checkbox"]:checked::after {
   content: '';
   display: block;
@@ -50,7 +48,6 @@
   transform: rotate(45deg) translate(2px, -1px);
   margin: 2px auto 0;
 }
-/* outline the tile when selected */
 .tile.is-selected { outline: 2px solid var(--clay-aa); outline-offset: -2px; }
 
 /* ── Request this image button (lightbox) ────────────────── */
@@ -152,41 +149,41 @@
 <section class="gallery-head">
   <div class="container">
     <div class="meta">
-      <span>Tuscany, Italy</span>
-      <span>April 2026</span>
-      <span>32 photographs</span>
+      <span>Lisbon, Portugal</span>
+      <span>February 2026</span>
+      <span>28 photographs</span>
       <span style="color: var(--olive);">● Public · all images licensable</span>
     </div>
-    <h1>Olive groves and linen.</h1>
-    <p>Two weeks travelling slowly through Val d'Orcia. The children in cream linen and soft brown leathers — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Petit Bateau</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
+    <h1>Tiles, salt and sun.</h1>
+    <p>A February week in Lisbon — chasing the low winter light through Alfama's narrow lanes and Chiado's faded grandeur. The children in soft wools and woven cottons — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Petit Bateau</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
   </div>
 </section>
 
 <!-- Justified rows gallery -->
 <div class="container">
   <div class="justified" id="grid">
-    <div class="tile span-7" data-img="https://picsum.photos/1800/1200?random=10" data-title="Morning in the grove" data-cap="Pienza, Tuscany. April 2026."
-         style="background-image:url('https://picsum.photos/1200/800?random=10');"></div>
-    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=20" data-title="Linen, low sun" data-cap="Val d'Orcia, Italy."
-         style="background-image:url('https://picsum.photos/1000/666?random=20');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=50" data-title="The long road home" data-cap="Cypress avenue, San Quirico."
-         style="background-image:url('https://picsum.photos/900/600?random=50');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=90" data-title="Tomatoes & terracotta" data-cap="Farmhouse kitchen, Montepulciano."
-         style="background-image:url('https://picsum.photos/900/600?random=90');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=60" data-title="Hand-in-hand" data-cap="Walking to market, dawn."
-         style="background-image:url('https://picsum.photos/900/600?random=60');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=110" data-title="Stone & shadow" data-cap="Chapel courtyard, late afternoon."
-         style="background-image:url('https://picsum.photos/1200/800?random=110');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=80" data-title="Field in flower" data-cap="Wildflowers, end of April."
-         style="background-image:url('https://picsum.photos/1200/800?random=80');"></div>
-    <div class="tile span-3" data-img="https://picsum.photos/1800/1200?random=70" data-title="Soft brown leathers" data-cap="Detail, market square."
-         style="background-image:url('https://picsum.photos/700/466?random=70');"></div>
-    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=100" data-title="Pienza windows" data-cap="Light through linen curtains."
-         style="background-image:url('https://picsum.photos/1000/666?random=100');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=30" data-title="Bicycle, hill" data-cap="Coasting back to the farmhouse."
-         style="background-image:url('https://picsum.photos/900/600?random=30');"></div>
-    <div class="tile span-8" data-img="https://picsum.photos/1800/1200?random=40" data-title="Goodnight, Tuscany" data-cap="Last light over the valley."
-         style="background-image:url('https://picsum.photos/1400/933?random=40');"></div>
+    <div class="tile span-7" data-img="https://picsum.photos/1800/1200?random=160" data-title="Azulejo morning" data-cap="Alfama tile-lined street. February 2026."
+         style="background-image:url('https://picsum.photos/1200/800?random=160');"></div>
+    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=170" data-title="Linen by the Tagus" data-cap="Riverside café, Cais do Sodré."
+         style="background-image:url('https://picsum.photos/1000/666?random=170');"></div>
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=200" data-title="Sun-faded shutters" data-cap="Mouraria quarter, mid-morning."
+         style="background-image:url('https://picsum.photos/900/600?random=200');"></div>
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=240" data-title="Pastéis and waiting" data-cap="Pastelaria, Chiado."
+         style="background-image:url('https://picsum.photos/900/600?random=240');"></div>
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=210" data-title="Running to the tram" data-cap="Eléctrico 28, Estrela."
+         style="background-image:url('https://picsum.photos/900/600?random=210');"></div>
+    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=260" data-title="Rooftops, layered" data-cap="View from Castelo de São Jorge."
+         style="background-image:url('https://picsum.photos/1200/800?random=260');"></div>
+    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=230" data-title="Market colours" data-cap="LX Factory weekend market."
+         style="background-image:url('https://picsum.photos/1200/800?random=230');"></div>
+    <div class="tile span-3" data-img="https://picsum.photos/1800/1200?random=220" data-title="Sandy soles" data-cap="Detail, Cascais beach."
+         style="background-image:url('https://picsum.photos/700/466?random=220');"></div>
+    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=250" data-title="The golden hour ferry" data-cap="Crossing to Cacilhas."
+         style="background-image:url('https://picsum.photos/1000/666?random=250');"></div>
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=180" data-title="Old books, new light" data-cap="Livraria Bertrand, Chiado."
+         style="background-image:url('https://picsum.photos/900/600?random=180');"></div>
+    <div class="tile span-8" data-img="https://picsum.photos/1800/1200?random=190" data-title="Last light over the bridge" data-cap="Ponte 25 de Abril at dusk."
+         style="background-image:url('https://picsum.photos/1400/933?random=190');"></div>
   </div>
 </div>
 
@@ -196,9 +193,9 @@
   <div class="frame">
     <div class="photo" id="photo"></div>
     <aside class="panel">
-      <span class="eyebrow">Tuscany · April 2026</span>
-      <h3 id="title" style="margin-top:10px;">Morning in the grove</h3>
-      <p class="caption" id="cap">Pienza, Tuscany. April 2026.</p>
+      <span class="eyebrow">Lisbon · February 2026</span>
+      <h3 id="title" style="margin-top:10px;">Azulejo morning</h3>
+      <p class="caption" id="cap">Alfama tile-lined street. February 2026.</p>
       <div class="licence">
         <h4>Licence this image</h4>
         <div class="tier"><span>Custom enquiry</span><strong>→</strong></div>
@@ -313,7 +310,6 @@
       photo.style.backgroundImage = `url('${safeCssUrl(t.dataset.img)}')`;
       title.textContent = t.dataset.title;
       cap.textContent   = t.dataset.cap;
-      // Update "Request this image" link with the current image title
       if (reqBtn) reqBtn.href = 'enquiry.html?image=' + encodeURIComponent(t.dataset.title || '');
       lb.classList.add('open');
     });
@@ -324,7 +320,6 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
   // ── Tile checkboxes ───────────────────────────────────────
-  // Injected via JS so the tile HTML stays clean.
   const bar        = document.getElementById('selection-bar');
   const barCount   = document.getElementById('bar-count');
   const barClear   = document.getElementById('bar-clear');
@@ -359,7 +354,6 @@
     wrap.appendChild(cb);
     tile.appendChild(wrap);
 
-    // Stop click on the checkbox from bubbling to the tile's lightbox handler
     wrap.addEventListener('click', e => e.stopPropagation());
 
     cb.addEventListener('change', () => {
@@ -368,10 +362,8 @@
     });
   });
 
-  // Clear button in the bar
   barClear.addEventListener('click', clearAll);
 
-  // "Request selected" navigates to enquiry page then clears
   barRequest.addEventListener('click', e => {
     e.preventDefault();
     const dest = barRequest.href;

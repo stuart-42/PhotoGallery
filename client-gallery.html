@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Petit Bateau — Spring 2026 · Private Gallery · Wandering Light</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+
+/* ── Client head ─────────────────────────────────────────── */
+.client-head {
+  background: var(--ink);
+  color: var(--cream);
+  padding: var(--s4) 0 var(--s5);
+}
+.client-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-bottom: var(--s4);
+}
+.client-lock {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(250,246,238,0.4);
+}
+.client-session {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: rgba(250,246,238,0.5);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.client-session strong { color: rgba(250,246,238,0.8); font-weight: 500; }
+.client-session a {
+  color: rgba(250,246,238,0.4);
+  text-decoration: underline;
+  transition: color 0.15s;
+}
+.client-session a:hover { color: var(--cream); }
+.client-head h1 {
+  font-style: italic;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: var(--cream);
+  margin: 0 0 10px;
+  line-height: 1.2;
+}
+.client-head .welcome {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: rgba(250,246,238,0.58);
+  margin: 0 0 var(--s4);
+}
+.client-meta-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  flex-wrap: wrap;
+}
+.fav-counter {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: rgba(250,246,238,0.55);
+}
+.fav-counter .hrt { color: #c05050; font-size: 16px; line-height: 1; }
+.fav-counter strong {
+  color: var(--cream);
+  font-size: 15px;
+  font-weight: 600;
+  min-width: 1ch;
+}
+.shoot-meta {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(250,246,238,0.3);
+}
+
+/* ── Tile controls ───────────────────────────────────────── */
+
+/* Heart — top left */
+.tile-heart {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  background: rgba(0,0,0,0.38);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  color: rgba(255,255,255,0.85);
+  padding: 0;
+}
+.tile:hover .tile-heart,
+.tile.is-fav .tile-heart { opacity: 1; }
+.tile.is-fav .tile-heart {
+  background: rgba(168,48,48,0.88);
+  color: #fff;
+}
+
+/* Checkbox — top right */
+.tile-check-wrap {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  width: 26px;
+  height: 26px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.tile:hover .tile-check-wrap,
+.tile.is-selected .tile-check-wrap { opacity: 1; }
+
+.tile-check-wrap input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255,255,255,0.9);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.3);
+  cursor: pointer;
+  display: block;
+  transition: background 0.15s, border-color 0.15s;
+}
+.tile-check-wrap input[type="checkbox"]:checked {
+  background: var(--clay-aa);
+  border-color: var(--clay-aa);
+}
+.tile-check-wrap input[type="checkbox"]:checked::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: 2px solid var(--cream);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(2px, -1px);
+  margin: 2px auto 0;
+}
+.tile.is-selected { outline: 2px solid var(--clay-aa); outline-offset: -2px; }
+
+/* Comment button — bottom left, above watermark */
+.tile-comment-btn {
+  position: absolute;
+  bottom: 12px;
+  left: 10px;
+  z-index: 3;
+  width: 28px;
+  height: 28px;
+  background: rgba(0,0,0,0.42);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  padding: 0;
+  line-height: 1;
+}
+.tile:hover .tile-comment-btn { opacity: 1; }
+.tile.has-comment .tile-comment-btn {
+  opacity: 1;
+  background: var(--clay-aa);
+}
+
+/* ── Lightbox client actions ─────────────────────────────── */
+.lb-actions {
+  border-top: 1px solid var(--hairline);
+  padding-top: var(--s3);
+  margin-top: var(--s1);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lb-fav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  background: none;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--ink);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  width: 100%;
+}
+.lb-fav-btn:hover { border-color: var(--clay); color: var(--clay-deep); }
+.lb-fav-btn.is-fav {
+  background: rgba(168,48,48,0.07);
+  border-color: rgba(168,48,48,0.3);
+  color: #8c2020;
+}
+.lb-request-btn {
+  display: block;
+  padding: 11px 16px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-align: center;
+  background: var(--clay-aa);
+  color: var(--cream);
+  border-radius: 3px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.lb-request-btn:hover { background: var(--clay-deep); color: var(--cream); }
+.lb-comment-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  background: none;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--ink);
+  transition: border-color 0.15s, color 0.15s;
+  width: 100%;
+}
+.lb-comment-btn:hover { border-color: var(--clay); color: var(--clay-deep); }
+
+/* ── Comment panel ───────────────────────────────────────── */
+.panel-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(31,27,23,0.32);
+  z-index: 399;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.panel-backdrop.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.comment-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(380px, 100vw);
+  background: var(--cream);
+  box-shadow: -4px 0 32px rgba(31,27,23,0.14);
+  z-index: 400;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding: var(--s4) var(--s4) var(--s4);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+.comment-panel.open { transform: translateX(0); }
+
+.cp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.cp-header h4 {
+  font-style: italic;
+  font-size: 1.3rem;
+  margin: 0;
+}
+.cp-close {
+  font-size: 22px;
+  color: rgba(31,27,23,0.4);
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.cp-close:hover { color: var(--ink); }
+
+.cp-thumb {
+  width: 100%;
+  aspect-ratio: 3/2;
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+.cp-img-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--clay-deep);
+  margin: 0;
+  flex-shrink: 0;
+}
+.cp-textarea {
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 12px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--cream-deep);
+  color: var(--ink);
+  resize: vertical;
+  min-height: 110px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.cp-textarea:focus { border-color: var(--clay); }
+.cp-save-btn { width: 100%; justify-content: center; flex-shrink: 0; }
+.cp-fine {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: rgba(31,27,23,0.42);
+  line-height: 1.5;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* ── Selection bar ───────────────────────────────────────── */
+.selection-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 300;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 14px clamp(20px, 4vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transform: translateY(100%);
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.selection-bar.visible { transform: translateY(0); }
+.sel-count {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: rgba(250,246,238,0.75);
+}
+.sel-count strong { color: var(--cream); font-weight: 600; }
+.sel-actions { display: flex; align-items: center; gap: 12px; }
+.sel-clear {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: rgba(250,246,238,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: color 0.15s;
+}
+.sel-clear:hover { color: var(--cream); }
+.sel-request {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 9px 20px;
+  background: var(--clay-aa);
+  color: var(--cream);
+  border-radius: 3px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.sel-request:hover { background: var(--clay-deep); color: var(--cream); }
+
+@media (max-width: 720px) {
+  .client-top { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .comment-panel, .panel-backdrop, .selection-bar { transition: none; }
+  .tile-heart, .tile-check-wrap, .tile-comment-btn { transition: none; }
+  .lb-fav-btn, .lb-comment-btn, .lb-request-btn { transition: none; }
+  .cp-textarea { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Site header -->
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">Wandering<span class="dot">·</span>Light</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="primary-nav">
+      <a href="gallery-a.html">Galleries</a>
+      <a href="story.html">Story</a>
+      <a href="index.html#brands">For Brands</a>
+      <a href="private.html" class="cta is-active">Client Login</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Client head -->
+<section class="client-head">
+  <div class="container">
+    <div class="client-top">
+      <span class="client-lock">🔒 Private gallery</span>
+      <div class="client-session">
+        <span>Logged in as <strong>Petit Bateau</strong></span>
+        <a href="private.html">Log out</a>
+      </div>
+    </div>
+    <h1>Petit Bateau — Spring 2026 Shoot.</h1>
+    <p class="welcome">Your private gallery is ready to review.</p>
+    <div class="client-meta-row">
+      <div class="fav-counter">
+        <span class="hrt" aria-hidden="true">♥</span>
+        <strong id="fav-count">0</strong>
+        <span>favourited</span>
+      </div>
+      <span class="shoot-meta">124 photographs · Tuscany, April 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery grid -->
+<div class="container">
+  <div class="justified" id="grid">
+    <div class="tile span-7" data-img="https://picsum.photos/1800/1200?random=911" data-title="Morning light, cream linen" data-cap="Val d'Orcia, April 2026."
+         style="background-image:url('https://picsum.photos/1200/800?random=911');"></div>
+    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=912" data-title="Grove path, early April" data-cap="Pienza countryside."
+         style="background-image:url('https://picsum.photos/1000/666?random=912');"></div>
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=913" data-title="Terracotta morning" data-cap="Farmhouse kitchen, Montepulciano."
+         style="background-image:url('https://picsum.photos/900/600?random=913');"></div>
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=914" data-title="Wild poppies" data-cap="Roadside south of Siena."
+         style="background-image:url('https://picsum.photos/900/600?random=914');"></div>
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=915" data-title="Blue shutters" data-cap="San Quirico d'Orcia."
+         style="background-image:url('https://picsum.photos/900/600?random=915');"></div>
+    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=916" data-title="Soft wool, warm stone" data-cap="Belvedere viewpoint, Pienza."
+         style="background-image:url('https://picsum.photos/1200/800?random=916');"></div>
+    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=917" data-title="Two paces ahead" data-cap="Cypress avenue at dusk."
+         style="background-image:url('https://picsum.photos/1200/800?random=917');"></div>
+    <div class="tile span-3" data-img="https://picsum.photos/1800/1200?random=918" data-title="Hand-stitched detail" data-cap="SS26 knitwear close-up."
+         style="background-image:url('https://picsum.photos/700/466?random=918');"></div>
+    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=919" data-title="Cypress silhouette" data-cap="Late afternoon, Val d'Orcia."
+         style="background-image:url('https://picsum.photos/1000/666?random=919');"></div>
+    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=920" data-title="Market Saturday" data-cap="Pienza market square."
+         style="background-image:url('https://picsum.photos/900/600?random=920');"></div>
+    <div class="tile span-8" data-img="https://picsum.photos/1800/1200?random=921" data-title="Last light over the valley" data-cap="Golden hour, Piazza Pio II."
+         style="background-image:url('https://picsum.photos/1400/933?random=921');"></div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button class="close" id="lb-close" aria-label="Close">×</button>
+  <div class="frame">
+    <div class="photo" id="lb-photo"></div>
+    <aside class="panel">
+      <span class="eyebrow">Petit Bateau · April 2026</span>
+      <h3 id="lb-title" style="margin-top:10px;"></h3>
+      <p class="caption" id="lb-cap"></p>
+      <div class="lb-actions">
+        <button type="button" class="lb-fav-btn" id="lb-fav-btn" aria-pressed="false">
+          <span id="lb-fav-icon">♡</span>
+          <span id="lb-fav-label">Add to favourites</span>
+        </button>
+        <a href="#" id="lb-request-btn" class="lb-request-btn">Request this image →</a>
+        <button type="button" class="lb-comment-btn" id="lb-comment-btn">✎ Add a note</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Comment panel -->
+<div class="panel-backdrop" id="panel-backdrop"></div>
+<div class="comment-panel" id="comment-panel" role="dialog" aria-modal="true" aria-label="Add note">
+  <div class="cp-header">
+    <h4>Add a note</h4>
+    <button class="cp-close" id="cp-close" aria-label="Close note panel" type="button">×</button>
+  </div>
+  <div class="cp-thumb" id="cp-thumb"></div>
+  <p class="cp-img-label" id="cp-img-label"></p>
+  <textarea class="cp-textarea" id="cp-text" placeholder="Retouching notes, colour preferences, usage context…"></textarea>
+  <button class="btn btn-primary cp-save-btn" id="cp-save" type="button">Save note</button>
+  <p class="cp-fine">Notes are only visible to you and the photographer.</p>
+</div>
+
+<!-- Selection bar -->
+<div class="selection-bar" id="selection-bar" role="status" aria-live="polite" aria-atomic="true">
+  <span class="sel-count" id="bar-count"></span>
+  <div class="sel-actions">
+    <button class="sel-clear" id="bar-clear" type="button">Clear selection</button>
+    <a class="sel-request" id="bar-request" href="enquiry.html?batch=true&client=true">Request selected →</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="grid">
+      <div class="col">
+        <p class="lead"><em>Wandering Light</em></p>
+        <p>Children, clothes, and the road — photographed slowly.</p>
+      </div>
+      <div class="col">
+        <h4>Galleries</h4>
+        <a href="gallery-a.html">Tuscany · Olive groves</a>
+        <a href="gallery-b.html">Lisbon · Tiles &amp; sun</a>
+        <a href="gallery-d.html">Scottish Coast · Grey skies</a>
+        <a href="private.html">Client login</a>
+        <a href="#">Licensing</a>
+      </div>
+      <div class="col">
+        <h4>About</h4>
+        <a href="story.html">Our story</a>
+        <a href="#">Travel diary</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="col">
+        <h4>For brands</h4>
+        <a href="index.html#brands">Services</a>
+        <a href="#">Past collaborations</a>
+        <a href="#">Request pack</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Wandering Light. All photographs subject to copyright.</span>
+      <span>Privacy · Licensing terms · Cookies</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Image protection
+  document.addEventListener('contextmenu', e => {
+    if (e.target.classList.contains('tile') || e.target.tagName === 'IMG' || e.target.id === 'lb-photo') {
+      e.preventDefault();
+    }
+  });
+  document.addEventListener('dragstart', e => e.preventDefault());
+
+  // Mobile nav toggle
+  (function() {
+    const toggle = document.querySelector('.nav-toggle');
+    const nav    = document.getElementById('primary-nav');
+    const header = document.querySelector('.site-header');
+    if (!toggle || !nav || !header) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    nav.addEventListener('click', e => { if (e.target.tagName === 'A') setOpen(false); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false); toggle.focus();
+      }
+    });
+    document.addEventListener('click', e => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      if (header.contains(e.target)) return;
+      setOpen(false);
+    });
+  })();
+
+  // Utility
+  function safeCssUrl(raw) {
+    const s = (raw || '').trim();
+    if (/^javascript:/i.test(s) || /^data:/i.test(s)) return '';
+    return s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  }
+
+  function extractBgUrl(tile) {
+    const m = tile.style.backgroundImage.match(/url\(['"]?([^'"]+)['"]?\)/);
+    return m ? m[1] : (tile.dataset.img || '');
+  }
+
+  // ── Persistent state (localStorage) ──────────────────────────
+  const FAV_KEY     = 'wl-cg-fav';
+  const COMMENT_KEY = 'wl-cg-comments';
+
+  function loadFavs() {
+    try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); }
+    catch { return new Set(); }
+  }
+  function saveFavs(set) {
+    try { localStorage.setItem(FAV_KEY, JSON.stringify([...set])); } catch {}
+  }
+  function loadComments() {
+    try { return JSON.parse(localStorage.getItem(COMMENT_KEY) || '{}'); }
+    catch { return {}; }
+  }
+  function saveComments(obj) {
+    try { localStorage.setItem(COMMENT_KEY, JSON.stringify(obj)); } catch {}
+  }
+
+  let favs     = loadFavs();
+  let comments = loadComments();
+  let currentLbIdx = -1;
+  let currentCpIdx = -1;
+
+  const tiles = Array.from(document.querySelectorAll('.tile'));
+
+  // ── Favourites counter ────────────────────────────────────────
+  function updateFavCounter() {
+    document.getElementById('fav-count').textContent = favs.size;
+  }
+  updateFavCounter();
+
+  // ── Inject per-tile controls ──────────────────────────────────
+  tiles.forEach((tile, idx) => {
+
+    // Heart button (top-left)
+    const heart = document.createElement('button');
+    heart.type = 'button';
+    heart.className = 'tile-heart';
+    heart.setAttribute('aria-pressed', favs.has(idx) ? 'true' : 'false');
+    heart.setAttribute('aria-label', (favs.has(idx) ? 'Unfavourite ' : 'Favourite ') + (tile.dataset.title || 'image'));
+    heart.textContent = '♥';
+    tile.appendChild(heart);
+    if (favs.has(idx)) tile.classList.add('is-fav');
+
+    heart.addEventListener('click', e => { e.stopPropagation(); toggleFav(idx); });
+
+    // Checkbox (top-right)
+    const checkWrap = document.createElement('label');
+    checkWrap.className = 'tile-check-wrap';
+    checkWrap.setAttribute('aria-label', 'Select ' + (tile.dataset.title || 'image'));
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.className = 'tile-check';
+    checkWrap.appendChild(cb);
+    tile.appendChild(checkWrap);
+    checkWrap.addEventListener('click', e => e.stopPropagation());
+    cb.addEventListener('change', () => {
+      tile.classList.toggle('is-selected', cb.checked);
+      updateBar();
+    });
+
+    // Comment button (bottom-left)
+    const commentBtn = document.createElement('button');
+    commentBtn.type = 'button';
+    commentBtn.className = 'tile-comment-btn';
+    commentBtn.setAttribute('aria-label', (comments[idx] ? 'Edit note for ' : 'Add note to ') + (tile.dataset.title || 'image'));
+    commentBtn.textContent = '✎';
+    tile.appendChild(commentBtn);
+    if (comments[idx]) tile.classList.add('has-comment');
+
+    commentBtn.addEventListener('click', e => { e.stopPropagation(); openCommentPanel(idx); });
+
+    // Tile click → lightbox
+    tile.addEventListener('click', () => openLightbox(idx));
+  });
+
+  // ── Favourites ────────────────────────────────────────────────
+  function toggleFav(idx) {
+    const tile  = tiles[idx];
+    const heart = tile.querySelector('.tile-heart');
+    if (favs.has(idx)) {
+      favs.delete(idx);
+      tile.classList.remove('is-fav');
+      if (heart) {
+        heart.setAttribute('aria-pressed', 'false');
+        heart.setAttribute('aria-label', 'Favourite ' + (tile.dataset.title || 'image'));
+      }
+    } else {
+      favs.add(idx);
+      tile.classList.add('is-fav');
+      if (heart) {
+        heart.setAttribute('aria-pressed', 'true');
+        heart.setAttribute('aria-label', 'Unfavourite ' + (tile.dataset.title || 'image'));
+      }
+    }
+    saveFavs(favs);
+    updateFavCounter();
+    if (currentLbIdx === idx) syncLbFavBtn();
+  }
+
+  // ── Lightbox ──────────────────────────────────────────────────
+  const lb           = document.getElementById('lightbox');
+  const lbPhoto      = document.getElementById('lb-photo');
+  const lbTitle      = document.getElementById('lb-title');
+  const lbCap        = document.getElementById('lb-cap');
+  const lbFavBtn     = document.getElementById('lb-fav-btn');
+  const lbFavIcon    = document.getElementById('lb-fav-icon');
+  const lbFavLabel   = document.getElementById('lb-fav-label');
+  const lbRequestBtn = document.getElementById('lb-request-btn');
+  const lbCommentBtn = document.getElementById('lb-comment-btn');
+
+  function openLightbox(idx) {
+    currentLbIdx = idx;
+    const tile = tiles[idx];
+    lbPhoto.style.backgroundImage = `url('${safeCssUrl(tile.dataset.img)}')`;
+    lbTitle.textContent = tile.dataset.title || '';
+    lbCap.textContent   = tile.dataset.cap   || '';
+    lbRequestBtn.href   = 'enquiry.html?image=' + encodeURIComponent(tile.dataset.title || '') + '&client=true';
+    syncLbFavBtn();
+    lb.classList.add('open');
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('open');
+    currentLbIdx = -1;
+  }
+
+  function syncLbFavBtn() {
+    const isFav = currentLbIdx >= 0 && favs.has(currentLbIdx);
+    lbFavBtn.classList.toggle('is-fav', isFav);
+    lbFavIcon.textContent  = isFav ? '♥' : '♡';
+    lbFavLabel.textContent = isFav ? 'Favourited' : 'Add to favourites';
+    lbFavBtn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+  lbFavBtn.addEventListener('click', () => {
+    if (currentLbIdx >= 0) toggleFav(currentLbIdx);
+  });
+
+  lbCommentBtn.addEventListener('click', () => {
+    if (currentLbIdx >= 0) {
+      const idx = currentLbIdx;
+      closeLightbox();
+      openCommentPanel(idx);
+    }
+  });
+
+  // ── Comment panel ─────────────────────────────────────────────
+  const commentPanel = document.getElementById('comment-panel');
+  const backdrop     = document.getElementById('panel-backdrop');
+
+  function openCommentPanel(idx) {
+    closeLightbox();
+    currentCpIdx = idx;
+    const tile   = tiles[idx];
+    const bgUrl  = extractBgUrl(tile);
+
+    document.getElementById('cp-thumb').style.backgroundImage = bgUrl ? `url('${safeCssUrl(bgUrl)}')` : '';
+    document.getElementById('cp-img-label').textContent = tile.dataset.title || '';
+    document.getElementById('cp-text').value = comments[idx] || '';
+
+    commentPanel.classList.add('open');
+    backdrop.classList.add('visible');
+    setTimeout(() => document.getElementById('cp-text').focus(), 60);
+  }
+
+  function closeCommentPanel() {
+    commentPanel.classList.remove('open');
+    backdrop.classList.remove('visible');
+    currentCpIdx = -1;
+  }
+
+  document.getElementById('cp-close').addEventListener('click', closeCommentPanel);
+  backdrop.addEventListener('click', closeCommentPanel);
+
+  document.getElementById('cp-save').addEventListener('click', () => {
+    if (currentCpIdx < 0) return;
+    const text     = document.getElementById('cp-text').value.trim();
+    const tile     = tiles[currentCpIdx];
+    const btn      = tile.querySelector('.tile-comment-btn');
+    const titleStr = tile.dataset.title || 'image';
+
+    if (text) {
+      comments[currentCpIdx] = text;
+      tile.classList.add('has-comment');
+      if (btn) btn.setAttribute('aria-label', 'Edit note for ' + titleStr);
+    } else {
+      delete comments[currentCpIdx];
+      tile.classList.remove('has-comment');
+      if (btn) btn.setAttribute('aria-label', 'Add note to ' + titleStr);
+    }
+    saveComments(comments);
+    closeCommentPanel();
+  });
+
+  // Escape closes whichever overlay is open (comment panel wins over lightbox)
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (commentPanel.classList.contains('open')) {
+      closeCommentPanel();
+    } else if (lb.classList.contains('open')) {
+      closeLightbox();
+    }
+  });
+
+  // ── Selection bar ─────────────────────────────────────────────
+  const bar        = document.getElementById('selection-bar');
+  const barCount   = document.getElementById('bar-count');
+  const barClear   = document.getElementById('bar-clear');
+  const barRequest = document.getElementById('bar-request');
+
+  function updateBar() {
+    const n = document.querySelectorAll('.tile-check:checked').length;
+    if (n > 0) {
+      barCount.innerHTML = '<strong>' + n + '</strong> image' + (n === 1 ? '' : 's') + ' selected';
+      bar.classList.add('visible');
+    } else {
+      bar.classList.remove('visible');
+    }
+  }
+
+  function clearAll() {
+    document.querySelectorAll('.tile-check').forEach(cb => { cb.checked = false; });
+    document.querySelectorAll('.tile.is-selected').forEach(t => t.classList.remove('is-selected'));
+    updateBar();
+  }
+
+  barClear.addEventListener('click', clearAll);
+  barRequest.addEventListener('click', e => {
+    e.preventDefault();
+    const dest = barRequest.href;
+    clearAll();
+    window.location.href = dest;
+  });
+</script>
+
+</body>
+</html>
