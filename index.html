@@ -18,7 +18,7 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="nav" id="primary-nav">
-      <a href="gallery-alpine-expedition.html">Galleries</a>
+      <a href="index.html#collections">Featured Collections</a>
       <a href="#story">Story</a>
       <a href="#brands">For Brands</a>
       <a href="private.html" class="cta">Client Login</a>
@@ -42,7 +42,7 @@
 <!-- Featured galleries -->
 <section class="section">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head" id="collections">
       <div>
         <span class="eyebrow" style="font-size: 25px;">Featured collections</span>
       </div>
@@ -160,23 +160,23 @@
       <div class="col">
         <h4>About</h4>
         <a href="index.html#story">Our story</a>
-        <a href="#">Contact</a>
+        <a href="contact.html">Contact</a>
       </div>
       <div class="col">
         <h4>For brands</h4>
-        <a href="#brands">Services</a>
+        <a href="index.html#brands">Services</a>
         <a href="#">Request pack</a>
       </div>
     </div>
     <div class="legal">
-      <span>© 2026 The Roaming Lens. All photographs subject to copyright.</span>
-      <span>Privacy · Licensing terms · Cookies</span>
+      <span>&copy; 2026 The Roaming Lens. All photographs subject to copyright.</span>
+      <span><a href="privacy.html">Privacy</a> &middot; <a href="#">Licensing terms</a> &middot; <a href="privacy.html#cookies">Cookies</a></span>
     </div>
   </div>
 </footer>
 
 <script>
-  // Image protection — disable right-click and drag globally
+  // Image protection
   document.addEventListener('contextmenu', e => {
     if (e.target.tagName === 'IMG' || e.target.classList.contains('img') || e.target.classList.contains('bg')) {
       e.preventDefault();
@@ -187,20 +187,46 @@
   // Mobile nav toggle
   (function() {
     const toggle = document.querySelector('.nav-toggle');
-    const nav = document.getElementById('primary-nav');
+    const nav    = document.getElementById('primary-nav');
     const header = document.querySelector('.site-header');
     if (!toggle || !nav || !header) return;
-
     function setOpen(open) {
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      toggle.setAttribute('aria-label',    open ? 'Close menu' : 'Open menu');
+    }
+    toggle.addEventListener('click', () => { setOpen(toggle.getAttribute('aria-expanded') !== 'true'); });
+    nav.addEventListener('click', e => { if (e.target.tagName === 'A') setOpen(false); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
+    });
+    document.addEventListener('click', e => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      if (header.contains(e.target)) return;
+      setOpen(false);
+    });
+  })();
+
+  // Gallery strip scroller
+  (function() {
+    const strip = document.getElementById('galleryStrip');
+    const prev  = document.getElementById('stripPrev');
+    const next  = document.getElementById('stripNext');
+    if (!strip || !prev || !next) return;
+
+    const STEP = 320; // px per button press
+
+    function updateButtons() {
+      prev.classList.toggle('hidden', strip.scrollLeft <= 0);
+      next.classList.toggle('hidden', strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 1);
     }
 
-    toggle.addEventListener('click', () => {
-      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
-    });
-    nav.addEventListener('click', e => {
-      if (e.target.tagName === 'A') setOpen(false);
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded
+    prev.addEventListener('click', () => { strip.scrollBy({ left: -STEP, behavior: 'smooth' }); });
+    next.addEventListener('click', () => { strip.scrollBy({ left:  STEP, behavior: 'smooth' }); });
+    strip.addEventListener('scroll', updateButtons, { passive: true });
+
+    // Initial state
+    updateButtons();
+  })();
+</script>
+</body>
+</html>
