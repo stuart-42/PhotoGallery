@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(dir C:\\\\Users\\\\stuar_k06qbsq\\\\Downloads\\\\DSCF0990* *)",
+      "Bash(git push *)",
+      "Bash(git rm *)"
+    ]
+  }
+}
