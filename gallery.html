@@ -290,7 +290,7 @@
         <h4>About</h4>
         <a href="index.html#story">Our story</a>
         <a href="#">Travel diary</a>
-        <a href="#">Contact</a>
+        <a href="contact.html">Contact</a>
       </div>
       <div class="col">
         <h4>For brands</h4>
@@ -301,7 +301,7 @@
     </div>
     <div class="legal">
       <span>© 2026 The Roaming Lens. All photographs subject to copyright.</span>
-      <span>Privacy · Licensing terms · Cookies</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="#">Licensing terms</a> · <a href="privacy.html#cookies">Cookies</a></span>
     </div>
   </div>
 </footer>
@@ -365,156 +365,4 @@
     });
   }
 
-  // Image protection
-  document.addEventListener('contextmenu', e => {
-    if (e.target.classList.contains('tile') || e.target.tagName === 'IMG' || e.target.id === 'photo') {
-      e.preventDefault();
-    }
-  });
-  document.addEventListener('dragstart', e => e.preventDefault());
-
-  // Mobile nav toggle
-  (function() {
-    const toggle = document.querySelector('.nav-toggle');
-    const nav = document.getElementById('primary-nav');
-    const header = document.querySelector('.site-header');
-    if (!toggle || !nav || !header) return;
-
-    function setOpen(open) {
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    }
-
-    toggle.addEventListener('click', () => {
-      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
-    });
-    nav.addEventListener('click', e => {
-      if (e.target.tagName === 'A') setOpen(false);
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        setOpen(false);
-        toggle.focus();
-      }
-    });
-    document.addEventListener('click', e => {
-      if (toggle.getAttribute('aria-expanded') !== 'true') return;
-      if (header.contains(e.target)) return;
-      setOpen(false);
-    });
-  })();
-
-  // Only allow http/https URLs in backgroundImage to block javascript:/data: injection.
-  function safeCssUrl(raw) {
-    const s = (raw || '').trim();
-    if (/^javascript:/i.test(s) || /^data:/i.test(s)) return '';
-    return s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-  }
-
-  // Lightbox
-  const lb      = document.getElementById('lightbox');
-  const photo   = document.getElementById('photo');
-  const title   = document.getElementById('title');
-  const cap     = document.getElementById('cap');
-  const reqBtn  = document.getElementById('request-btn');
-
-  document.querySelectorAll('.tile').forEach(t => {
-    t.addEventListener('click', () => {
-      photo.style.backgroundImage = `url('${safeCssUrl(t.dataset.img)}')`;
-      title.textContent = t.dataset.title;
-      cap.textContent   = t.dataset.cap;
-      // Update "Request this image" link with the current image title
-      if (reqBtn) reqBtn.href = 'enquiry.html?image=' + encodeURIComponent(t.dataset.title || '');
-      lb.classList.add('open');
-    });
-  });
-  const close = () => lb.classList.remove('open');
-  document.getElementById('close').addEventListener('click', close);
-  lb.addEventListener('click', e => { if (e.target === lb) close(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-
-  // ── Tile checkboxes ───────────────────────────────────────
-  // Injected via JS so the tile HTML stays clean.
-  const bar        = document.getElementById('selection-bar');
-  const barCount   = document.getElementById('bar-count');
-  const barClear   = document.getElementById('bar-clear');
-  const barRequest = document.getElementById('bar-request');
-
-  function updateBar() {
-    const n = document.querySelectorAll('.tile-check:checked').length;
-    if (n > 0) {
-      barCount.innerHTML = '<strong>' + n + '</strong> image' + (n === 1 ? '' : 's') + ' selected';
-      bar.classList.add('visible');
-    } else {
-      bar.classList.remove('visible');
-    }
-  }
-
-  function clearAll() {
-    document.querySelectorAll('.tile-check').forEach(cb => { cb.checked = false; });
-    document.querySelectorAll('.tile.is-selected').forEach(t => t.classList.remove('is-selected'));
-    updateBar();
-  }
-
-  document.querySelectorAll('.tile').forEach(tile => {
-    const wrap = document.createElement('label');
-    wrap.className = 'tile-check-wrap';
-    wrap.setAttribute('aria-label', 'Select ' + (tile.dataset.title || 'image'));
-    wrap.title = tile.dataset.title || '';
-
-    const cb = document.createElement('input');
-    cb.type      = 'checkbox';
-    cb.className = 'tile-check';
-
-    wrap.appendChild(cb);
-    tile.appendChild(wrap);
-
-    // Stop click on the checkbox from bubbling to the tile's lightbox handler
-    wrap.addEventListener('click', e => e.stopPropagation());
-
-    cb.addEventListener('change', () => {
-      tile.classList.toggle('is-selected', cb.checked);
-      updateBar();
-    });
-  });
-
-  // Clear button in the bar
-  barClear.addEventListener('click', clearAll);
-
-  // "Request selected" navigates to enquiry page then clears
-  barRequest.addEventListener('click', e => {
-    e.preventDefault();
-    const dest = barRequest.href;
-    clearAll();
-    window.location.href = dest;
-  });
-
-  // ── Load more ─────────────────────────────────────────────
-  (function() {
-    const INITIAL = 12;
-    const BATCH   = 9;
-    const tiles   = Array.from(document.querySelectorAll('#grid .tile'));
-    const btn     = document.getElementById('load-more');
-    const endMsg  = document.getElementById('gallery-end');
-    if (!btn || tiles.length <= INITIAL) { if (btn) btn.hidden = true; return; }
-    tiles.forEach((t, i) => { if (i >= INITIAL) t.style.display = 'none'; });
-    let shown = INITIAL;
-    function revealNext() {
-      const batch = tiles.slice(shown, shown + BATCH);
-      batch.forEach(t => {
-        t.style.display = '';
-        t.classList.add('is-revealed');
-        t.addEventListener('animationend', () => t.classList.remove('is-revealed'), { once: true });
-      });
-      shown += batch.length;
-      if (shown >= tiles.length) { btn.hidden = true; endMsg.style.display = 'block'; }
-      detectAndAssignSpans();
-    }
-    btn.addEventListener('click', revealNext);
-  })();
-
-  detectAndAssignSpans();
-</script>
-
-</body>
-</html>
+ 

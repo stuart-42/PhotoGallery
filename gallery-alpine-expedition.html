@@ -367,7 +367,7 @@
         <h4>About</h4>
         <a href="index.html#story">Our story</a>
         <a href="#">Travel diary</a>
-        <a href="#">Contact</a>
+        <a href="contact.html">Contact</a>
       </div>
       <div class="col">
         <h4>For brands</h4>
@@ -378,7 +378,7 @@
     </div>
     <div class="legal">
       <span>© 2026 The Roaming Lens. All photographs subject to copyright.</span>
-      <span>Privacy · Licensing terms · Cookies</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="#">Licensing terms</a> · <a href="privacy.html#cookies">Cookies</a></span>
     </div>
   </div>
 </footer>
@@ -506,12 +506,12 @@
       if (reqBtn) {
         const _subj = encodeURIComponent('Licensing Enquiry \u2014 ' + (t.dataset.title || 'Image'));
         const _body = encodeURIComponent(
-          'Hi Stuart,\n\nI am interested in licensing the following image:\n\n'
+          'Hi Anne,\n\nI am interested in licensing the following image:\n\n'
           + 'Image: ' + (t.dataset.title || '') + '\n'
           + (t.dataset.cap ? 'Caption: ' + t.dataset.cap + '\n' : '')
           + '\nIntended use:\n\nPlease let me know your licensing terms.\n\nThank you'
         );
-        reqBtn.href = 'mailto:stuartclarkfc@gmail.com?subject=' + _subj + '&body=' + _body;
+        reqBtn.href = 'mailto:annepeters86@gmail.com?subject=' + _subj + '&body=' + _body;
       }
       lb.classList.add('open');
     });
@@ -568,9 +568,27 @@
 
   barRequest.addEventListener('click', e => {
     e.preventDefault();
-    const dest = barRequest.href;
+    const checked = Array.from(document.querySelectorAll('.tile-check:checked'));
+    const lines = checked.map(cb => {
+      const tile  = cb.closest('.tile');
+      const title = tile ? (tile.dataset.title || 'Untitled') : 'Untitled';
+      const pid   = tile ? (tile.dataset.publicId || '') : '';
+      const url   = pid
+        ? 'https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_public/' + pid
+        : '(no URL)';
+      return title + '\n' + url;
+    });
+    const count   = checked.length;
+    const gallery = 'Alpine & Expedition';
+    const subject = encodeURIComponent('Image Licensing Enquiry \u2014 ' + count + ' image' + (count === 1 ? '' : 's') + ' from ' + gallery);
+    const body    = encodeURIComponent(
+      'Hi Anne,\n\n' +
+      'I am interested in licensing the following image' + (count === 1 ? '' : 's') + ' from the ' + gallery + ' gallery:\n\n' +
+      lines.join('\n\n') +
+      '\n\nPlease let me know the licensing options available.\n\nThanks'
+    );
     clearAll();
-    window.location.href = dest;
+    window.location.href = 'mailto:annepeters86@gmail.com?subject=' + subject + '&body=' + body;
   });
 
   // ── Load more ─────────────────────────────────────────────

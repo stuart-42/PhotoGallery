@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Contact · The Roaming Lens</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.contact-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--s7) var(--gutter) var(--s8);
+}
+.contact-wrap h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: var(--s2);
+}
+.contact-wrap .sub {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ink);
+  margin-bottom: var(--s5);
+}
+.contact-wrap a {
+  color: var(--clay-aa);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.contact-wrap a:hover { color: var(--clay-deep); }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">The Roaming<span class="dot">·</span>Lens</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="primary-nav">
+      <a href="gallery-alpine-expedition.html">Galleries</a>
+      <a href="index.html#story">Story</a>
+      <a href="index.html#brands">For Brands</a>
+      <a href="private.html" class="cta">Client Login</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="contact-wrap">
+
+    <h1>Get in touch</h1>
+    <p class="sub">Whether you're interested in licensing an image, a brand collaboration, or just want to say hello — write directly! <p>
+
+    <p class="sub">Email: <a href="mailto:annepeters86@gmail.com" style="font-weight:500;">annepeters86@gmail.com</a></p>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="grid">
+      <div class="col">
+        <p class="lead"><em>The Roaming Lens</em></p>
+        <p>Children, clothes, and the road — photographed slowly.</p>
+      </div>
+      <div class="col">
+        <h4>Galleries</h4>
+        <a href="gallery-alpine-expedition.html">Alpine &amp; Expedition</a>
+        <a href="gallery-heritage-whimsical.html">Heritage &amp; Whimsical</a>
+        <a href="gallery-sun-tropical.html">Sun &amp; Tropical</a>
+        <a href="gallery-winter-wander.html">Winter &amp; Wander</a>
+        <a href="gallery-motion-match.html">Motion &amp; Match</a>
+        <a href="gallery-nest-nook.html">Nest &amp; Nook</a>
+        <a href="gallery-wild-natural.html">Wild &amp; Natural</a>
+      </div>
+      <div class="col">
+        <h4>About</h4>
+        <a href="index.html#story">Our story</a>
+        <a href="#">Travel diary</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="col">
+        <h4>For brands</h4>
+        <a href="index.html#brands">Services</a>
+        <a href="#">Past collaborations</a>
+        <a href="#">Request pack</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 The Roaming Lens. All photographs subject to copyright.</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="#">Licensing terms</a> · <a href="privacy.html#cookies">Cookies</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Mobile nav */
+  (function() {
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('primary-nav');
+    const header = document.querySelector('.site-header');
+    if (!toggle || !nav || !header) return;
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    toggle.addEventListener('click', () => { setOpen(toggle.getAttribute('aria-expanded') !== 'true'); });
+    nav.addEventListener('click', e => { if (e.target.tagName === 'A') setOpen(false); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
+    });
+    document.addEventListener('click', e => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      if (header.contains(e.target)) return;
+      setOpen(false);
+    });
+  })();
+</script>
+
+</body>
+</html>
