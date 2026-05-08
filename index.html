@@ -52,43 +52,43 @@
     <div class="gallery-strip-wrap">
       <div class="gallery-strip" id="galleryStrip">
         <a class="gcard" href="gallery-alpine-expedition.html">
-          <div class="img" style="background-image:url('https://picsum.photos/900/600?random=20');"></div>
+          <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_strip_card/DSCF0612_sn6gr6');"></div>
           <div class="meta">
             <span class="place">Alpine & Expedition</span>
           </div>
         </a>
         <a class="gcard" href="gallery-heritage-whimsical.html">
-          <div class="img" style="background-image:url('https://picsum.photos/900/600?random=170');"></div>
+          <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_strip_card/DSCF9265_zcxzng');"></div>
           <div class="meta">
             <span class="place">Heritage & Whimsical</span>
           </div>
         </a>
         <a class="gcard" href="gallery-sun-tropical.html">
-          <div class="img" style="background-image:url('https://picsum.photos/900/600?random=310');"></div>
+          <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_strip_card/DSCF7457_gf8kce');"></div>
           <div class="meta">
             <span class="place">Sun & Tropical</span>
           </div>
         </a>
         <a class="gcard" href="gallery-winter-wander.html">
-          <div class="img" style="background-image:url('https://picsum.photos/900/600?random=520');"></div>
+          <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_strip_card/Lappland_Winter_4_miatid');"></div>
           <div class="meta">
             <span class="place">Winter & Wander</span>
           </div>
         </a>
         <a class="gcard" href="gallery-motion-match.html">
-          <div class="img" style="background-image:url('https://picsum.photos/900/600?random=720');"></div>
+          <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_strip_card/DSCF2110a_otjqvi');"></div>
           <div class="meta">
             <span class="place">Motion & Match</span>
           </div>
         </a>
         <a class="gcard" href="gallery-nest-nook.html">
-          <div class="img" style="background-image:url('https://picsum.photos/900/600?random=840');"></div>
+          <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_strip_card/DSCF7246_cubnm2');"></div>
           <div class="meta">
             <span class="place">Nest & Nook</span>
           </div>
         </a>
         <a class="gcard" href="gallery-wild-natural.html">
-          <div class="img" style="background-image:url('https://picsum.photos/900/600?random=960');"></div>
+          <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_strip_card/DSCF5202_gee7nu');"></div>
           <div class="meta">
             <span class="place">Wild & Natural</span>
           </div>
@@ -204,35 +204,4 @@
     nav.addEventListener('click', e => {
       if (e.target.tagName === 'A') setOpen(false);
     });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        setOpen(false);
-        toggle.focus();
-      }
-    });
-    document.addEventListener('click', e => {
-      if (toggle.getAttribute('aria-expanded') !== 'true') return;
-      if (header.contains(e.target)) return;
-      setOpen(false);
-    });
-  })();
-
-  // Gallery strip scroll buttons
-  const strip = document.getElementById('galleryStrip');
-  const prev  = document.getElementById('stripPrev');
-  const next  = document.getElementById('stripNext');
-  const CARD  = 320 + 24; // card width + gap
-
-  function updateButtons() {
-    prev.classList.toggle('hidden', strip.scrollLeft <= 0);
-    next.classList.toggle('hidden', strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 2);
-  }
-
-  prev.addEventListener('click', () => { strip.scrollBy({ left: -CARD, behavior: 'smooth' }); });
-  next.addEventListener('click', () => { strip.scrollBy({ left:  CARD, behavior: 'smooth' }); });
-  strip.addEventListener('scroll', updateButtons, { passive: true });
-  updateButtons(); // set initial state
-</script>
-
-</body>
-</html>
+    docum

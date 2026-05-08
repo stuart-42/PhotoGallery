@@ -35,8 +35,12 @@ External resources are loaded from CDNs at runtime: Google Fonts (Cormorant Gara
 
 **Mobile nav controller:** same per-page duplication. Each page's `<script>` block contains a small IIFE that toggles `aria-expanded` on `.nav-toggle` (and updates its `aria-label`), with handlers for click, link-click-to-close, Escape, and outside click. The CSS uses `.nav-toggle[aria-expanded="true"] + .nav` to drive the open/closed state — `aria-expanded` is the single source of truth, so the script does *not* add a separate "open" class. This keeps screen-reader state correct.
 
-## Conventions
+## Cloudinary image hosting — CRITICAL RULES
 
-- The site is image-heavy by design but ships zero real photographs — every image URL is `picsum.photos/...?random=N`. When wiring new layouts, keep using picsum so the prototype renders without assets.
-- Pricing, copy, dates ("Spring 2026 — Tuscany"), brand names (Petit Bateau, Bonpoint), and image counts are mockup content, not data — edit freely.
-- Admin dashboard is fully self-contained; changing tokens in `styles.css` will not affect it.
+Cloud name: `deeck6k0n`. Images are served from `https://res.cloudinary.com/deeck6k0n/image/upload/`.
+
+**`data-public-id` values must NEVER include a folder path prefix.**
+Cloudinary folders (`roaming-lens/galleries/<gallery>/`) are dashboard display metadata only — they are NOT part of the public ID used in URLs. The working URL pattern is:
+
+```
+https://res.cloudinary.com/deeck6k0n/image/upload/<transform>/<publicI
