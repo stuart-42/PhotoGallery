@@ -43,4 +43,25 @@ Cloud name: `deeck6k0n`. Images are served from `https://res.cloudinary.com/deec
 Cloudinary folders (`roaming-lens/galleries/<gallery>/`) are dashboard display metadata only — they are NOT part of the public ID used in URLs. The working URL pattern is:
 
 ```
-https://res.cloudinary.com/deeck6k0n/image/upload/<transform>/<publicI
+https://res.cloudinary.com/deeck6k0n/image/upload/<transform>/<publicId>
+```
+
+Correct: `data-public-id="DSCF0717a_xvqp76"`
+WRONG:   `data-public-id="roaming-lens/galleries/alpine-expedition/DSCF0717a_xvqp76"`
+
+Adding the folder prefix causes every image request to 404. **Do not add `roaming-lens/`, `galleries/`, or any subfolder to `data-public-id` values, ever.** If you see these prefixes in `data-public-id` attributes, strip them.
+
+**Named transforms** (referenced in JS as `CLOUD.tile_portrait` etc.):
+- `t_tile_portrait` — portrait tile crop
+- `t_tile_landscape` — landscape tile crop
+- `t_lightbox_public` — watermarked ~1200px (public galleries)
+- `t_lightbox_private` — clean ~1200px (client galleries)
+- `t_strip_card` — homepage gallery strip cards
+- `t_hero` — hero banners ~2400px
+
+**Orientation-aware tile system** (`detectAndAssignSpans()` in each gallery file): fires a `w_20,q_1/<publicId>` probe per tile, reads `naturalWidth`/`naturalHeight` to detect portrait vs landscape, then sets `tile.style.aspectRatio` from the probe dimensions and assigns a span class. Portrait tiles use span-3 or span-4; landscape tiles use span-6 or span-7. Do not change the probe URL pattern or add folder prefixes to it.
+
+## Conventions
+
+- Pricing, copy, dates ("Spring 2026 — Tuscany"), brand names (Petit Bateau, Bonpoint), and image counts are mockup content, not data — edit freely.
+- Admin dashboard is fully self-contained; changing tokens in `styles.css` will not affect it.

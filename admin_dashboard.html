@@ -1880,11 +1880,12 @@ function applyGlobalFilter() {
 calcKPIs();
 initCharts();
 buildSalesTable();
-buildGalleryTable();
+buildGalleriesTable();
 buildClientsTable();
 buildEnquiriesTable();
 
-document.querySelector('.dashboard-footer span:first-child').style.color = '#c9a96e';
+const _footerSpan = document.querySelector('.dashboard-footer span:first-child');
+if (_footerSpan) _footerSpan.style.color = '#c9a96e';
 
 // ════════════════════════════════════════════════
 // GALLERY MANAGEMENT (mock — client-side only)

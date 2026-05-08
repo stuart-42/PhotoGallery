@@ -204,4 +204,35 @@
     nav.addEventListener('click', e => {
       if (e.target.tagName === 'A') setOpen(false);
     });
-    docum
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    document.addEventListener('click', e => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      if (header.contains(e.target)) return;
+      setOpen(false);
+    });
+  })();
+
+  // Gallery strip scroll buttons
+  const strip = document.getElementById('galleryStrip');
+  const prev  = document.getElementById('stripPrev');
+  const next  = document.getElementById('stripNext');
+  const CARD  = 320 + 24; // card width + gap
+
+  function updateButtons() {
+    prev.classList.toggle('hidden', strip.scrollLeft <= 0);
+    next.classList.toggle('hidden', strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 2);
+  }
+
+  prev.addEventListener('click', () => { strip.scrollBy({ left: -CARD, behavior: 'smooth' }); });
+  next.addEventListener('click', () => { strip.scrollBy({ left:  CARD, behavior: 'smooth' }); });
+  strip.addEventListener('scroll', updateButtons, { passive: true });
+  updateButtons(); // set initial state
+</script>
+
+</body>
+</html>
