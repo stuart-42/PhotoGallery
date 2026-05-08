@@ -356,7 +356,7 @@
   <span class="sel-count" id="bar-count"></span>
   <div class="sel-actions">
     <button class="sel-clear" id="bar-clear" type="button">Clear selection</button>
-    <a class="sel-request" id="bar-request" href="enquiry.html?batch=true">Request selected →</a>
+    <a class="sel-request" id="bar-request" href="#">Request selected →</a>
   </div>
 </div>
 
@@ -519,7 +519,16 @@
       photo.style.backgroundImage = `url('${safeCssUrl(t.dataset.img)}')`;
       title.textContent = t.dataset.title;
       cap.textContent   = t.dataset.cap;
-      if (reqBtn) reqBtn.href = 'enquiry.html?image=' + encodeURIComponent(t.dataset.title || '');
+      if (reqBtn) {
+        const _subj = encodeURIComponent('Licensing Enquiry \u2014 ' + (t.dataset.title || 'Image'));
+        const _body = encodeURIComponent(
+          'Hi Stuart,\n\nI am interested in licensing the following image:\n\n'
+          + 'Image: ' + (t.dataset.title || '') + '\n'
+          + (t.dataset.cap ? 'Caption: ' + t.dataset.cap + '\n' : '')
+          + '\nIntended use:\n\nPlease let me know your licensing terms.\n\nThank you'
+        );
+        reqBtn.href = 'mailto:stuartclarkfc@gmail.com?subject=' + _subj + '&body=' + _body;
+      }
       lb.classList.add('open');
     });
   });
