@@ -144,7 +144,7 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="nav" id="primary-nav">
-      <a href="gallery.html" class="is-active">Galleries</a>
+      <a href="index.html#collections" class="is-active">Featured Collections</a>
       <a href="index.html#story">Story</a>
       <a href="index.html#brands">For Brands</a>
       <a href="private.html" class="cta">Client Login</a>
@@ -163,6 +163,7 @@
     </div>
     <h1>Salt, palms and colour.</h1>
     <p>Two weeks in Bali — rice terraces, temple ceremonies and beach coves. The children in light cottons and natural linens — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Petit Bateau</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
+    <span class="select-hint">Hover over any image to select it &mdash; select multiple for a batch licensing enquiry.</span>
   </div>
 </section>
 
@@ -328,7 +329,7 @@
   </div>
   <div class="load-more-wrap">
     <button class="load-more-btn" id="load-more" type="button">Load more images</button>
-    <p class="gallery-end" id="gallery-end">You've reached the end of this gallery.</p>
+    <p class="gallery-end" id="gallery-end" hidden>You've reached the end of this gallery.</p>
   </div>
 </div>
 
@@ -336,7 +337,10 @@
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
   <button class="close" id="close" aria-label="Close">×</button>
   <div class="frame">
-    <div class="photo" id="photo"></div>
+    <div class="photo" id="photo">
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous image">&#8592;</button>
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Next image">&#8594;</button>
+  </div>
     <aside class="panel">
       <span class="eyebrow">Bali · August 2025</span>
       <h3 id="title" style="margin-top:10px;">Rice terrace, wide open</h3>
@@ -382,7 +386,6 @@
       <div class="col">
         <h4>About</h4>
         <a href="index.html#story">Our story</a>
-
         <a href="contact.html">Contact</a>
       </div>
       <div class="col">
@@ -392,8 +395,8 @@
       </div>
     </div>
     <div class="legal">
-      <span>© 2026 The Roaming Lens. All photographs subject to copyright.</span>
-      <span><a href="privacy.html">Privacy</a> · <a href="#">Licensing terms</a> · <a href="privacy.html#cookies">Cookies</a></span>
+      <span>&copy; 2026 The Roaming Lens. All photographs subject to copyright.</span>
+      <span><a href="privacy.html">Privacy</a> &middot; <a href="#">Licensing terms</a> &middot; <a href="privacy.html#cookies">Cookies</a></span>
     </div>
   </div>
 </footer>
@@ -513,28 +516,52 @@
   const cap     = document.getElementById('cap');
   const reqBtn  = document.getElementById('request-btn');
 
-  document.querySelectorAll('.tile').forEach(t => {
-    t.addEventListener('click', () => {
-      photo.style.backgroundImage = `url('${safeCssUrl(t.dataset.img)}')`;
-      title.textContent = t.dataset.title;
-      cap.textContent   = t.dataset.cap;
-      if (reqBtn) {
-        const _subj = encodeURIComponent('Licensing Enquiry \u2014 ' + (t.dataset.title || 'Image'));
-        const _body = encodeURIComponent(
-          'Hi Anne,\n\nI am interested in licensing the following image:\n\n'
-          + 'Image: ' + (t.dataset.title || '') + '\n'
-          + (t.dataset.cap ? 'Caption: ' + t.dataset.cap + '\n' : '')
-          + '\nIntended use:\n\nPlease let me know your licensing terms.\n\nThank you'
-        );
-        reqBtn.href = 'mailto:annepeters86@gmail.com?subject=' + _subj + '&body=' + _body;
-      }
-      lb.classList.add('open');
-    });
+  let lbTiles = [];
+  let lbIdx   = 0;
+
+  function openAt(idx) {
+    lbIdx = Math.max(0, Math.min(idx, lbTiles.length - 1));
+    const t = lbTiles[lbIdx];
+    photo.style.backgroundImage = `url('${safeCssUrl(t.dataset.img)}')`;
+    title.textContent = t.dataset.title || '';
+    cap.textContent   = t.dataset.cap   || '';
+    if (reqBtn) {
+      const _subj = encodeURIComponent('Licensing Enquiry — ' + (t.dataset.title || 'Image'));
+      const _body = encodeURIComponent(
+        'Hi Anne,\n\nI am interested in licensing the following image:\n\n'
+        + 'Image: ' + (t.dataset.title || '') + '\n'
+        + (t.dataset.cap ? 'Caption: ' + t.dataset.cap + '\n' : '')
+        + '\nIntended use:\n\nPlease let me know your licensing terms.\n\nThank you'
+      );
+      reqBtn.href = 'mailto:annepeters86@gmail.com?subject=' + _subj + '&body=' + _body;
+    }
+    const lbPrev = document.getElementById('lb-prev');
+    const lbNext = document.getElementById('lb-next');
+    if (lbPrev) lbPrev.classList.toggle('hidden', lbIdx === 0);
+    if (lbNext) lbNext.classList.toggle('hidden', lbIdx === lbTiles.length - 1);
+    lb.classList.add('open');
+  }
+
+  document.querySelectorAll('.tile').forEach((t, i) => {
+    lbTiles.push(t);
+    t.addEventListener('click', () => openAt(i));
   });
+
   const close = () => lb.classList.remove('open');
   document.getElementById('close').addEventListener('click', close);
   lb.addEventListener('click', e => { if (e.target === lb) close(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+  const lbPrevBtn = document.getElementById('lb-prev');
+  const lbNextBtn = document.getElementById('lb-next');
+  if (lbPrevBtn) lbPrevBtn.addEventListener('click', e => { e.stopPropagation(); if (lbIdx > 0) openAt(lbIdx - 1); });
+  if (lbNextBtn) lbNextBtn.addEventListener('click', e => { e.stopPropagation(); if (lbIdx < lbTiles.length - 1) openAt(lbIdx + 1); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { close(); return; }
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft'  && lbIdx > 0)                   openAt(lbIdx - 1);
+    if (e.key === 'ArrowRight' && lbIdx < lbTiles.length - 1)  openAt(lbIdx + 1);
+  });
 
   // ── Tile checkboxes ───────────────────────────────────────
   const bar        = document.getElementById('selection-bar');
