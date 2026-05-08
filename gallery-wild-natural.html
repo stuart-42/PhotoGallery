@@ -374,7 +374,7 @@
   <div class="container">
     <div class="grid">
       <div class="col">
-        <p class="lead"><em>The Roaming Lens</em></p>
+        <p class="lead"><a href="index.html"><em>The Roaming Lens</em></a></p>
         <p>Children, clothes, and the road — photographed slowly.</p>
       </div>
       <div class="col">
@@ -537,6 +537,7 @@
         'Hi Anne,\n\nI am interested in licensing the following image:\n\n'
         + 'Image: ' + (t.dataset.title || '') + '\n'
         + (t.dataset.cap ? 'Caption: ' + t.dataset.cap + '\n' : '')
+        + 'URL: ' + (t.dataset.img || '') + '\n'
         + '\nIntended use:\n\nPlease let me know your licensing terms.\n\nThank you'
       );
       reqBtn.href = 'mailto:annepeters86@gmail.com?subject=' + _subj + '&body=' + _body;
