@@ -18,6 +18,7 @@
         })();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
     <style>
         :root {
             --bg-primary: #f0f2f5;
@@ -625,11 +626,75 @@
         }
         .upload-summary strong { color: var(--text-primary); }
 
+        /* ── Arrange modal ── */
+        .arrange-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            max-height: 58vh;
+            overflow-y: auto;
+            padding: 2px;
+        }
+        .arrange-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            cursor: grab;
+            position: relative;
+            user-select: none;
+            transition: box-shadow 0.15s;
+        }
+        .arrange-card:active { cursor: grabbing; }
+        .arrange-card-thumb {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .drag-handle {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: rgba(0,0,0,0.52);
+            color: #fff;
+            font-size: 13px;
+            line-height: 1;
+            border-radius: 4px;
+            padding: 4px 6px;
+            opacity: 0;
+            transition: opacity 0.15s;
+            cursor: grab;
+        }
+        .arrange-card:hover .drag-handle { opacity: 1; }
+        .arrange-card-label {
+            padding: 6px 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sortable-ghost  { opacity: 0.4; }
+        .sortable-chosen { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .arrange-success {
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: #f0faf3;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #155724;
+            display: none;
+        }
+
         /* responsive */
         @media (max-width: 700px) {
             .modal { max-width: 100% !important; }
             .row-actions { flex-wrap: wrap; }
             .manage-header { align-items: flex-start; }
+            .arrange-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* ──────────────────────────────────────────────────────────
@@ -1335,6 +1400,29 @@
 </div>
 
 <!-- ══════════════════════════════════════════ -->
+<!-- ARRANGE IMAGES MODAL                       -->
+<!-- ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-arrange" onclick="if(event.target===this)closeArrangeModal()">
+    <div class="modal wide" role="dialog" aria-modal="true" aria-labelledby="arrange-title">
+        <div class="modal-header">
+            <div>
+                <div class="modal-title" id="arrange-title">Arrange Images</div>
+                <div class="modal-sub">Drag images into the order you want them displayed.</div>
+            </div>
+            <button class="modal-close" type="button" onclick="closeArrangeModal()" aria-label="Close">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="arrange-grid" id="arrange-grid"></div>
+            <div class="arrange-success" id="arrange-success"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin ghost" type="button" onclick="closeArrangeModal()">Cancel</button>
+            <button class="btn-admin primary" type="button" onclick="saveArrangeOrder()">Save Order</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
 <!-- IMAGE UPLOAD MODAL                         -->
 <!-- ══════════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-upload" onclick="if(event.target===this)closeUploadModal()">
@@ -1848,6 +1936,7 @@ function buildGalleriesTable() {
             <td style="text-align:right;">
                 <div class="row-actions">
                     <button class="btn-admin ghost small" onclick="openUploadModal(${g.id})">⤴ Upload</button>
+                    <button class="btn-admin ghost small" onclick="openArrangeModal(${g.id})">⇅ Arrange</button>
                     <button class="btn-admin ghost small" onclick="editGallery(${g.id})">Edit</button>
                     <button class="btn-admin ghost small" onclick="viewGallery(${g.id})">View</button>
                     <button class="btn-admin danger small" onclick="deleteGallery(${g.id})">Delete</button>
@@ -2081,12 +2170,97 @@ function finishUpload() {
     closeUploadModal();
 }
 
+// ── Arrange modal ─────────────────────────────
+let activeSortable = null;
+let activeArrangeGalleryId = null;
+
+function slugify(name) {
+    return name.toLowerCase()
+        .replace(/[&]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
+function openArrangeModal(galleryId) {
+    const g = GALLERIES.find(x => x.id === galleryId);
+    if (!g) return;
+    activeArrangeGalleryId = galleryId;
+
+    const slug = slugify(g.name);
+    document.getElementById('arrange-title').textContent = `Arrange — ${g.name}`;
+    document.getElementById('arrange-success').style.display = 'none';
+
+    const grid = document.getElementById('arrange-grid');
+    const count = Math.min(g.images, 24);
+    const baseSeed = g.id * 31 + 200;
+
+    // Restore saved order from localStorage if present
+    let savedOrder = null;
+    try { savedOrder = JSON.parse(localStorage.getItem(`gallery-order-${slug}`)); } catch (e) {}
+
+    grid.innerHTML = Array.from({ length: count }, (_, i) => {
+        const idx = savedOrder ? (savedOrder.indexOf(`galleries/${slug}/image-${i + 1}`) + 1 || i + 1) - 1 : i;
+        const seed = baseSeed + idx;
+        const publicId = `galleries/${slug}/image-${idx + 1}`;
+        const filename = `image-${String(idx + 1).padStart(3, '0')}.jpg`;
+        return `<div class="arrange-card" data-public-id="${escapeHtml(publicId)}">
+            <div class="arrange-card-thumb" style="background-image:url('https://picsum.photos/300/225?random=${seed}');">
+                <span class="drag-handle" aria-hidden="true" title="Drag to reorder">⠿</span>
+            </div>
+            <div class="arrange-card-label" title="${escapeHtml(publicId)}">${escapeHtml(filename)}</div>
+        </div>`;
+    }).join('');
+
+    if (activeSortable) { activeSortable.destroy(); activeSortable = null; }
+    activeSortable = new Sortable(grid, {
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        dragClass: 'sortable-drag',
+        handle: '.drag-handle'
+    });
+
+    document.getElementById('modal-arrange').classList.add('open');
+}
+
+function closeArrangeModal() {
+    document.getElementById('modal-arrange').classList.remove('open');
+    activeArrangeGalleryId = null;
+    if (activeSortable) { activeSortable.destroy(); activeSortable = null; }
+}
+
+function saveArrangeOrder() {
+    const g = GALLERIES.find(x => x.id === activeArrangeGalleryId);
+    if (!g) return;
+    const slug = slugify(g.name);
+    const arrangeGrid = document.getElementById('arrange-grid');
+    const order = [...arrangeGrid.querySelectorAll('.arrange-card')]
+        .map(card => card.dataset.publicId);
+
+    try { localStorage.setItem(`gallery-order-${slug}`, JSON.stringify(order)); } catch (e) {}
+
+    const blob = new Blob([JSON.stringify({ gallery: slug, order }, null, 2)],
+        { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `gallery-order-${slug}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    const successEl = document.getElementById('arrange-success');
+    successEl.textContent = `Order saved. Add gallery-order-${slug}.json to your project folder and commit to GitHub.`;
+    successEl.style.display = 'block';
+    setTimeout(closeArrangeModal, 2400);
+}
+
 // Esc closes any open modal
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
         closeCreateGalleryModal();
         closeEditGalleryModal();
         closeUploadModal();
+        closeArrangeModal();
     }
 });
 

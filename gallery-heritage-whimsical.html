@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Grey skies and wool — Scottish Coast, Autumn 2025 · The Roaming Lens</title>
+<title>Hedgerows and heirlooms — Cotswolds, Spring 2026 · The Roaming Lens</title>
 <link rel="stylesheet" href="styles.css">
 <style>
 /* ── Tile selection checkbox ─────────────────────────────── */
@@ -120,10 +120,17 @@
 }
 .sel-request:hover { background: var(--clay-deep); color: var(--cream); }
 
+/* ── Orientation-driven tile fade ────────────────────────── */
+.justified .tile {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .selection-bar { transition: none; }
   .tile-check-wrap { transition: none; }
   .request-btn, .sel-request { transition: none; }
+  .justified .tile { opacity: 1 !important; transition: none !important; }
 }
 </style>
 </head>
@@ -149,41 +156,89 @@
 <section class="gallery-head">
   <div class="container">
     <div class="meta">
-      <span>Argyll, Scotland</span>
-      <span>December 2025</span>
-      <span>41 photographs</span>
+      <span>Cotswolds, England</span>
+      <span>March 2026</span>
+      <span>29 photographs</span>
       <span style="color: var(--olive);">● Public · all images licensable</span>
     </div>
-    <h1>Grey skies and wool.</h1>
-    <p>Three days along the Argyll coast in late December — grey skies, Atlantic light, and the children in Fair Isle knits and heavy wool. Clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Caramel</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
+    <h1>Hedgerows and heirlooms.</h1>
+    <p>A spring week in the Cotswolds — stone walls, blossoming orchards and wide meadows. The children in heritage smocks and hand-knitted layers — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Caramel</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
   </div>
 </section>
 
 <!-- Justified rows gallery -->
 <div class="container">
   <div class="justified" id="grid">
-    <div class="tile span-7" data-img="https://picsum.photos/1800/1200?random=510" data-title="Mist on the loch" data-cap="Loch Lomond, dawn."
-         style="background-image:url('https://picsum.photos/1200/800?random=510');"></div>
-    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=520" data-title="Grey wool, grey sea" data-cap="West coast cliff path."
-         style="background-image:url('https://picsum.photos/1000/666?random=520');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=550" data-title="The pebble shore" data-cap="Argyll beach, low tide."
-         style="background-image:url('https://picsum.photos/900/600?random=550');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=590" data-title="Harbour boats" data-cap="Tobermory, Isle of Mull."
-         style="background-image:url('https://picsum.photos/900/600?random=590');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=560" data-title="Winter heather" data-cap="Moorland above Oban."
-         style="background-image:url('https://picsum.photos/900/600?random=560');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=610" data-title="Salt and slate" data-cap="Corryvreckan cliff edge."
-         style="background-image:url('https://picsum.photos/1200/800?random=610');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=580" data-title="Fishing for light" data-cap="Pier at dusk, Inveraray."
-         style="background-image:url('https://picsum.photos/1200/800?random=580');"></div>
-    <div class="tile span-3" data-img="https://picsum.photos/1800/1200?random=570" data-title="Knitted and warm" data-cap="Detail, Fair Isle knitwear."
-         style="background-image:url('https://picsum.photos/700/466?random=570');"></div>
-    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=600" data-title="Into the haar" data-cap="Sea fog on the Firth of Clyde."
-         style="background-image:url('https://picsum.photos/1000/666?random=600');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=530" data-title="The old wall" data-cap="Ruined castle, Argyll."
-         style="background-image:url('https://picsum.photos/900/600?random=530');"></div>
-    <div class="tile span-8" data-img="https://picsum.photos/1800/1200?random=540" data-title="Last ferry home" data-cap="CalMac crossing at dusk."
-         style="background-image:url('https://picsum.photos/1400/933?random=540');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-1"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-1"
+         data-title="Through the orchard gate"
+         data-cap="Bourton-on-the-Water, March."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-1');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-2"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-2"
+         data-title="Bluebell haze"
+         data-cap="Lower Slaughter woodland."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-2');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-3"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-3"
+         data-title="The old milk churn"
+         data-cap="Farmyard, Chipping Campden."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-3');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-4"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-4"
+         data-title="Pinafore and primrose"
+         data-cap="Meadow edge, Bibury."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-4');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-5"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-5"
+         data-title="Dry stone and daisies"
+         data-cap="Field boundary, Burford."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-5');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-6"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-6"
+         data-title="Wool and warming sun"
+         data-cap="Village green, Bourton."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-6');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-7"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-7"
+         data-title="The red post box"
+         data-cap="High Street, Moreton-in-Marsh."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-7');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-8"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-8"
+         data-title="Smocked and damp"
+         data-cap="Muddy lane, after the rain."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-8');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-9"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-9"
+         data-title="Vintage bicycle"
+         data-cap="The green, Stow-on-the-Wold."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-9');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-10"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-10"
+         data-title="Thatched afternoon"
+         data-cap="Garden gate, Chipping Campden."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-10');"></div>
+    <div class="tile"
+         data-public-id="galleries/heritage-whimsical/placeholder-11"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/heritage-whimsical/placeholder-11"
+         data-title="In the meadow, slowly"
+         data-cap="Evening light, Burford."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/heritage-whimsical/placeholder-11');"></div>
+  </div>
+  <div class="load-more-wrap">
+    <button class="load-more-btn" id="load-more" type="button">Load more images</button>
+    <p class="gallery-end" id="gallery-end">You've reached the end of this gallery.</p>
   </div>
 </div>
 
@@ -193,9 +248,9 @@
   <div class="frame">
     <div class="photo" id="photo"></div>
     <aside class="panel">
-      <span class="eyebrow">Scottish Coast · December 2025</span>
-      <h3 id="title" style="margin-top:10px;">Mist on the loch</h3>
-      <p class="caption" id="cap">Loch Lomond, dawn.</p>
+      <span class="eyebrow">Cotswolds · March 2026</span>
+      <h3 id="title" style="margin-top:10px;">Through the orchard gate</h3>
+      <p class="caption" id="cap">Bourton-on-the-Water, March.</p>
       <div class="licence">
         <h4>Licence this image</h4>
         <div class="tier"><span>Custom enquiry</span><strong>→</strong></div>
@@ -225,11 +280,14 @@
       </div>
       <div class="col">
         <h4>Galleries</h4>
-        <a href="gallery-a.html">Tuscany · Olive groves</a>
-        <a href="gallery-b.html">Lisbon · Tiles &amp; sun</a>
-        <a href="gallery-d.html">Scottish Coast · Grey skies</a>
+        <a href="gallery-alpine-expedition.html">Alpine &amp; Expedition</a>
+        <a href="gallery-heritage-whimsical.html">Heritage &amp; Whimsical</a>
+        <a href="gallery-sun-tropical.html">Sun &amp; Tropical</a>
+        <a href="gallery-winter-wander.html">Winter &amp; Wander</a>
+        <a href="gallery-motion-match.html">Motion &amp; Match</a>
+        <a href="gallery-nest-nook.html">Nest &amp; Nook</a>
+        <a href="gallery-wild-natural.html">Wild &amp; Natural</a>
         <a href="private.html">Client login</a>
-        <a href="#">Licensing</a>
       </div>
       <div class="col">
         <h4>About</h4>
@@ -252,6 +310,64 @@
 </footer>
 
 <script>
+  // Cloudinary configuration
+  const CLOUD = {
+    base: 'https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload', // ADD YOUR CLOUDINARY CLOUD NAME
+    tile_landscape: 't_tile_landscape',
+    tile_portrait: 't_tile_portrait',
+    lightbox_public: 't_lightbox_public'
+  };
+
+  function detectAndAssignSpans() {
+    const tiles = document.querySelectorAll('.justified .tile');
+    let colsUsed = 0;
+
+    tiles.forEach((tile, index) => {
+      if ([...tile.classList].some(c => c.startsWith('span-'))) return;
+
+      const img = new Image();
+      const publicId = tile.dataset.publicId;
+
+      img.onload = function() {
+        const isPortrait = this.naturalHeight > this.naturalWidth;
+        const isSquare = Math.abs(this.naturalWidth - this.naturalHeight) / this.naturalWidth < 0.1;
+
+        let span;
+        if (isSquare) {
+          span = 4;
+        } else if (isPortrait) {
+          span = (index % 3 === 0) ? 3 : 5;
+        } else {
+          const remaining = 12 - colsUsed;
+          if (remaining >= 7 && index % 4 === 0) span = 7;
+          else if (remaining >= 6) span = 6;
+          else span = 4;
+        }
+
+        if (colsUsed + span > 12) colsUsed = 0;
+        colsUsed += span;
+        if (colsUsed === 12) colsUsed = 0;
+
+        tile.classList.add(`span-${span}`);
+
+        const transform = isPortrait ? CLOUD.tile_portrait : CLOUD.tile_landscape;
+        tile.style.backgroundImage = `url('${CLOUD.base}/${transform}/${publicId}')`;
+        tile.dataset.img = `${CLOUD.base}/${CLOUD.lightbox_public}/${publicId}`;
+
+        tile.style.opacity = '0';
+        tile.style.transition = 'opacity 0.3s ease';
+        requestAnimationFrame(() => { tile.style.opacity = '1'; });
+      };
+
+      img.onerror = function() {
+        tile.classList.add('span-4');
+        tile.style.opacity = '1';
+      };
+
+      img.src = `${CLOUD.base}/w_20,q_1/${publicId}`;
+    });
+  }
+
   // Image protection
   document.addEventListener('contextmenu', e => {
     if (e.target.classList.contains('tile') || e.target.tagName === 'IMG' || e.target.id === 'photo') {
@@ -370,6 +486,32 @@
     clearAll();
     window.location.href = dest;
   });
+
+  // ── Load more ─────────────────────────────────────────────
+  (function() {
+    const INITIAL = 12;
+    const BATCH   = 9;
+    const tiles   = Array.from(document.querySelectorAll('#grid .tile'));
+    const btn     = document.getElementById('load-more');
+    const endMsg  = document.getElementById('gallery-end');
+    if (!btn || tiles.length <= INITIAL) { if (btn) btn.hidden = true; return; }
+    tiles.forEach((t, i) => { if (i >= INITIAL) t.style.display = 'none'; });
+    let shown = INITIAL;
+    function revealNext() {
+      const batch = tiles.slice(shown, shown + BATCH);
+      batch.forEach(t => {
+        t.style.display = '';
+        t.classList.add('is-revealed');
+        t.addEventListener('animationend', () => t.classList.remove('is-revealed'), { once: true });
+      });
+      shown += batch.length;
+      if (shown >= tiles.length) { btn.hidden = true; endMsg.style.display = 'block'; }
+      detectAndAssignSpans();
+    }
+    btn.addEventListener('click', revealNext);
+  })();
+
+  detectAndAssignSpans();
 </script>
 
 </body>

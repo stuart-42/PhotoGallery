@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Autumn, quietly worn — Kyoto, Autumn 2025 · The Roaming Lens</title>
+<title>High peaks and merino — Swiss Alps, July 2025 · The Roaming Lens</title>
 <link rel="stylesheet" href="styles.css">
 <style>
 /* ── Tile selection checkbox ─────────────────────────────── */
@@ -120,10 +120,17 @@
 }
 .sel-request:hover { background: var(--clay-deep); color: var(--cream); }
 
+/* ── Orientation-driven tile fade ────────────────────────── */
+.justified .tile {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .selection-bar { transition: none; }
   .tile-check-wrap { transition: none; }
   .request-btn, .sel-request { transition: none; }
+  .justified .tile { opacity: 1 !important; transition: none !important; }
 }
 </style>
 </head>
@@ -149,41 +156,89 @@
 <section class="gallery-head">
   <div class="container">
     <div class="meta">
-      <span>Kyoto, Japan</span>
-      <span>October 2025</span>
-      <span>38 photographs</span>
+      <span>Swiss Alps</span>
+      <span>July 2025</span>
+      <span>36 photographs</span>
       <span style="color: var(--olive);">● Public · all images licensable</span>
     </div>
-    <h1>Autumn, quietly worn.</h1>
-    <p>An October campaign in Kyoto — autumn maples, temple stones, and quiet lanes. Shot across Arashiyama, Gion and Fushimi Inari. All photographs are watermarked previews; clean files are released after licence purchase.</p>
+    <h1>High peaks and merino.</h1>
+    <p>Three weeks above the snowline in Zermatt and Grindelwald. The children in fine merino wool and windproof shells — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Caramel</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
   </div>
 </section>
 
 <!-- Justified rows gallery -->
 <div class="container">
   <div class="justified" id="grid">
-    <div class="tile span-7" data-img="https://picsum.photos/1800/1200?random=710" data-title="Autumn maples" data-cap="Arashiyama bamboo grove, October."
-         style="background-image:url('https://picsum.photos/1200/800?random=710');"></div>
-    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=720" data-title="Gold on tatami" data-cap="Nishiki market side alley."
-         style="background-image:url('https://picsum.photos/1000/666?random=720');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=750" data-title="The morning path" data-cap="Fushimi Inari torii gates, dawn."
-         style="background-image:url('https://picsum.photos/900/600?random=750');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=790" data-title="Temple silence" data-cap="Ryōan-ji stone garden."
-         style="background-image:url('https://picsum.photos/900/600?random=790');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=760" data-title="Persimmons drying" data-cap="Old Gion district, October."
-         style="background-image:url('https://picsum.photos/900/600?random=760');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=810" data-title="Paper and lanterns" data-cap="Gion Matsuri preparation."
-         style="background-image:url('https://picsum.photos/1200/800?random=810');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=780" data-title="Evening drizzle" data-cap="Pontocho alley, dusk."
-         style="background-image:url('https://picsum.photos/1200/800?random=780');"></div>
-    <div class="tile span-3" data-img="https://picsum.photos/1800/1200?random=770" data-title="Charcoal and cord" data-cap="Detail, traditional obi."
-         style="background-image:url('https://picsum.photos/700/466?random=770');"></div>
-    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=800" data-title="Red leaves, still pond" data-cap="Eikan-dō temple garden."
-         style="background-image:url('https://picsum.photos/1000/666?random=800');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=730" data-title="The bamboo forest" data-cap="Sagano, late afternoon."
-         style="background-image:url('https://picsum.photos/900/600?random=730');"></div>
-    <div class="tile span-8" data-img="https://picsum.photos/1800/1200?random=740" data-title="Last light, Kamo" data-cap="Kamo River at sunset."
-         style="background-image:url('https://picsum.photos/1400/933?random=740');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-1"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-1"
+         data-title="First light on the glacier"
+         data-cap="Aletsch Glacier, Valais."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-1');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-2"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-2"
+         data-title="The climb"
+         data-cap="Eiger trail, summer."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-2');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-3"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-3"
+         data-title="Merino in the mist"
+         data-cap="Grindelwald valley, morning."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-3');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-4"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-4"
+         data-title="Summit breakfast"
+         data-cap="3,000m, Bernese Oberland."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-4');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-5"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-5"
+         data-title="Waterfall, cold hands"
+         data-cap="Trümmelbach Falls, July."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-5');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-6"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-6"
+         data-title="Wild camp, no walls"
+         data-cap="High pasture above Saas-Fee."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-6');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-7"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-7"
+         data-title="Running the moraine"
+         data-cap="Matterhorn in background."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-7');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-8"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-8"
+         data-title="Blue hour on the ridge"
+         data-cap="Lac de Moiry, dusk."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-8');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-9"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-9"
+         data-title="Packed and ready"
+         data-cap="Gare de Zermatt, early morning."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-9');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-10"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-10"
+         data-title="Last run down"
+         data-cap="Val de Bagnes, late afternoon."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-10');"></div>
+    <div class="tile"
+         data-public-id="galleries/alpine-expedition/placeholder-11"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/alpine-expedition/placeholder-11"
+         data-title="Stone and stars"
+         data-cap="Alp hut, Grindelwald First."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/alpine-expedition/placeholder-11');"></div>
+  </div>
+  <div class="load-more-wrap">
+    <button class="load-more-btn" id="load-more" type="button">Load more images</button>
+    <p class="gallery-end" id="gallery-end">You've reached the end of this gallery.</p>
   </div>
 </div>
 
@@ -193,9 +248,9 @@
   <div class="frame">
     <div class="photo" id="photo"></div>
     <aside class="panel">
-      <span class="eyebrow">Kyoto · October 2025</span>
-      <h3 id="title" style="margin-top:10px;">Autumn maples</h3>
-      <p class="caption" id="cap">Arashiyama bamboo grove, October.</p>
+      <span class="eyebrow">Swiss Alps · July 2025</span>
+      <h3 id="title" style="margin-top:10px;">First light on the glacier</h3>
+      <p class="caption" id="cap">Aletsch Glacier, Valais.</p>
       <div class="licence">
         <h4>Licence this image</h4>
         <div class="tier"><span>Custom enquiry</span><strong>→</strong></div>
@@ -225,11 +280,14 @@
       </div>
       <div class="col">
         <h4>Galleries</h4>
-        <a href="gallery-a.html">Tuscany · Olive groves</a>
-        <a href="gallery-b.html">Lisbon · Tiles &amp; sun</a>
-        <a href="gallery-d.html">Scottish Coast · Grey skies</a>
+        <a href="gallery-alpine-expedition.html">Alpine &amp; Expedition</a>
+        <a href="gallery-heritage-whimsical.html">Heritage &amp; Whimsical</a>
+        <a href="gallery-sun-tropical.html">Sun &amp; Tropical</a>
+        <a href="gallery-winter-wander.html">Winter &amp; Wander</a>
+        <a href="gallery-motion-match.html">Motion &amp; Match</a>
+        <a href="gallery-nest-nook.html">Nest &amp; Nook</a>
+        <a href="gallery-wild-natural.html">Wild &amp; Natural</a>
         <a href="private.html">Client login</a>
-        <a href="#">Licensing</a>
       </div>
       <div class="col">
         <h4>About</h4>
@@ -252,6 +310,64 @@
 </footer>
 
 <script>
+  // Cloudinary configuration
+  const CLOUD = {
+    base: 'https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload', // ADD YOUR CLOUDINARY CLOUD NAME
+    tile_landscape: 't_tile_landscape',
+    tile_portrait: 't_tile_portrait',
+    lightbox_public: 't_lightbox_public'
+  };
+
+  function detectAndAssignSpans() {
+    const tiles = document.querySelectorAll('.justified .tile');
+    let colsUsed = 0;
+
+    tiles.forEach((tile, index) => {
+      if ([...tile.classList].some(c => c.startsWith('span-'))) return;
+
+      const img = new Image();
+      const publicId = tile.dataset.publicId;
+
+      img.onload = function() {
+        const isPortrait = this.naturalHeight > this.naturalWidth;
+        const isSquare = Math.abs(this.naturalWidth - this.naturalHeight) / this.naturalWidth < 0.1;
+
+        let span;
+        if (isSquare) {
+          span = 4;
+        } else if (isPortrait) {
+          span = (index % 3 === 0) ? 3 : 5;
+        } else {
+          const remaining = 12 - colsUsed;
+          if (remaining >= 7 && index % 4 === 0) span = 7;
+          else if (remaining >= 6) span = 6;
+          else span = 4;
+        }
+
+        if (colsUsed + span > 12) colsUsed = 0;
+        colsUsed += span;
+        if (colsUsed === 12) colsUsed = 0;
+
+        tile.classList.add(`span-${span}`);
+
+        const transform = isPortrait ? CLOUD.tile_portrait : CLOUD.tile_landscape;
+        tile.style.backgroundImage = `url('${CLOUD.base}/${transform}/${publicId}')`;
+        tile.dataset.img = `${CLOUD.base}/${CLOUD.lightbox_public}/${publicId}`;
+
+        tile.style.opacity = '0';
+        tile.style.transition = 'opacity 0.3s ease';
+        requestAnimationFrame(() => { tile.style.opacity = '1'; });
+      };
+
+      img.onerror = function() {
+        tile.classList.add('span-4');
+        tile.style.opacity = '1';
+      };
+
+      img.src = `${CLOUD.base}/w_20,q_1/${publicId}`;
+    });
+  }
+
   // Image protection
   document.addEventListener('contextmenu', e => {
     if (e.target.classList.contains('tile') || e.target.tagName === 'IMG' || e.target.id === 'photo') {
@@ -370,6 +486,32 @@
     clearAll();
     window.location.href = dest;
   });
+
+  // ── Load more ─────────────────────────────────────────────
+  (function() {
+    const INITIAL = 12;
+    const BATCH   = 9;
+    const tiles   = Array.from(document.querySelectorAll('#grid .tile'));
+    const btn     = document.getElementById('load-more');
+    const endMsg  = document.getElementById('gallery-end');
+    if (!btn || tiles.length <= INITIAL) { if (btn) btn.hidden = true; return; }
+    tiles.forEach((t, i) => { if (i >= INITIAL) t.style.display = 'none'; });
+    let shown = INITIAL;
+    function revealNext() {
+      const batch = tiles.slice(shown, shown + BATCH);
+      batch.forEach(t => {
+        t.style.display = '';
+        t.classList.add('is-revealed');
+        t.addEventListener('animationend', () => t.classList.remove('is-revealed'), { once: true });
+      });
+      shown += batch.length;
+      if (shown >= tiles.length) { btn.hidden = true; endMsg.style.display = 'block'; }
+      detectAndAssignSpans();
+    }
+    btn.addEventListener('click', revealNext);
+  })();
+
+  detectAndAssignSpans();
 </script>
 
 </body>

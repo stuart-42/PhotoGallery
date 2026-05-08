@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Tiles, salt and sun — Lisbon, Winter 2026 · The Roaming Lens</title>
+<title>Frost and fjord — Lofoten, February 2026 · The Roaming Lens</title>
 <link rel="stylesheet" href="styles.css">
 <style>
 /* ── Tile selection checkbox ─────────────────────────────── */
@@ -120,10 +120,17 @@
 }
 .sel-request:hover { background: var(--clay-deep); color: var(--cream); }
 
+/* ── Orientation-driven tile fade ────────────────────────── */
+.justified .tile {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .selection-bar { transition: none; }
   .tile-check-wrap { transition: none; }
   .request-btn, .sel-request { transition: none; }
+  .justified .tile { opacity: 1 !important; transition: none !important; }
 }
 </style>
 </head>
@@ -149,41 +156,89 @@
 <section class="gallery-head">
   <div class="container">
     <div class="meta">
-      <span>Lisbon, Portugal</span>
+      <span>Lofoten Islands, Norway</span>
       <span>February 2026</span>
-      <span>28 photographs</span>
+      <span>34 photographs</span>
       <span style="color: var(--olive);">● Public · all images licensable</span>
     </div>
-    <h1>Tiles, salt and sun.</h1>
-    <p>A February week in Lisbon — chasing the low winter light through Alfama's narrow lanes and Chiado's faded grandeur. The children in soft wools and woven cottons — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Petit Bateau</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
+    <h1>Frost and fjord.</h1>
+    <p>February in the Lofoten Islands — deep snow, frozen harbours and the blue hour that lasts all afternoon. The children in heavyweight wool and waterproof layers — clothes by <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Caramel</a> and <a href="#" style="border-bottom:1px solid var(--clay);color:var(--clay-aa);">Bonpoint</a>. All photographs are watermarked previews; clean files are released after licence purchase.</p>
   </div>
 </section>
 
 <!-- Justified rows gallery -->
 <div class="container">
   <div class="justified" id="grid">
-    <div class="tile span-7" data-img="https://picsum.photos/1800/1200?random=160" data-title="Azulejo morning" data-cap="Alfama tile-lined street. February 2026."
-         style="background-image:url('https://picsum.photos/1200/800?random=160');"></div>
-    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=170" data-title="Linen by the Tagus" data-cap="Riverside café, Cais do Sodré."
-         style="background-image:url('https://picsum.photos/1000/666?random=170');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=200" data-title="Sun-faded shutters" data-cap="Mouraria quarter, mid-morning."
-         style="background-image:url('https://picsum.photos/900/600?random=200');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=240" data-title="Pastéis and waiting" data-cap="Pastelaria, Chiado."
-         style="background-image:url('https://picsum.photos/900/600?random=240');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=210" data-title="Running to the tram" data-cap="Eléctrico 28, Estrela."
-         style="background-image:url('https://picsum.photos/900/600?random=210');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=260" data-title="Rooftops, layered" data-cap="View from Castelo de São Jorge."
-         style="background-image:url('https://picsum.photos/1200/800?random=260');"></div>
-    <div class="tile span-6" data-img="https://picsum.photos/1800/1200?random=230" data-title="Market colours" data-cap="LX Factory weekend market."
-         style="background-image:url('https://picsum.photos/1200/800?random=230');"></div>
-    <div class="tile span-3" data-img="https://picsum.photos/1800/1200?random=220" data-title="Sandy soles" data-cap="Detail, Cascais beach."
-         style="background-image:url('https://picsum.photos/700/466?random=220');"></div>
-    <div class="tile span-5" data-img="https://picsum.photos/1800/1200?random=250" data-title="The golden hour ferry" data-cap="Crossing to Cacilhas."
-         style="background-image:url('https://picsum.photos/1000/666?random=250');"></div>
-    <div class="tile span-4" data-img="https://picsum.photos/1800/1200?random=180" data-title="Old books, new light" data-cap="Livraria Bertrand, Chiado."
-         style="background-image:url('https://picsum.photos/900/600?random=180');"></div>
-    <div class="tile span-8" data-img="https://picsum.photos/1800/1200?random=190" data-title="Last light over the bridge" data-cap="Ponte 25 de Abril at dusk."
-         style="background-image:url('https://picsum.photos/1400/933?random=190');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-1"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-1"
+         data-title="Harbour frozen"
+         data-cap="Svolvær, Lofoten. February."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-1');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-2"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-2"
+         data-title="Snow stairs"
+         data-cap="Reine fishing village."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-2');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-3"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-3"
+         data-title="Arctic blue hour"
+         data-cap="Nusfjord, 3pm."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-3');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-4"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-4"
+         data-title="Wool against wind"
+         data-cap="Henningsvær peninsula."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-4');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-5"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-5"
+         data-title="Red cod huts"
+         data-cap="Stockfish racks, Å village."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-5');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-6"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-6"
+         data-title="The ice edge"
+         data-cap="Fjord, Moskenesøya."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-6');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-7"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-7"
+         data-title="Mittens and moon"
+         data-cap="Hamnøy bridge, dusk."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-7');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-8"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-8"
+         data-title="Storm coming"
+         data-cap="Unstad beach, February."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-8');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-9"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-9"
+         data-title="Deep in snow"
+         data-cap="Mountain path, Austvågøya."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-9');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-10"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-10"
+         data-title="Warmth inside"
+         data-cap="Rorbuer cabin interior."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-10');"></div>
+    <div class="tile"
+         data-public-id="galleries/winter-wander/placeholder-11"
+         data-img="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_lightbox_public/galleries/winter-wander/placeholder-11"
+         data-title="Departure, cold platform"
+         data-cap="Bodø train station, dawn."
+         style="background-image:url('https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/t_tile_landscape/galleries/winter-wander/placeholder-11');"></div>
+  </div>
+  <div class="load-more-wrap">
+    <button class="load-more-btn" id="load-more" type="button">Load more images</button>
+    <p class="gallery-end" id="gallery-end">You've reached the end of this gallery.</p>
   </div>
 </div>
 
@@ -193,9 +248,9 @@
   <div class="frame">
     <div class="photo" id="photo"></div>
     <aside class="panel">
-      <span class="eyebrow">Lisbon · February 2026</span>
-      <h3 id="title" style="margin-top:10px;">Azulejo morning</h3>
-      <p class="caption" id="cap">Alfama tile-lined street. February 2026.</p>
+      <span class="eyebrow">Lofoten · February 2026</span>
+      <h3 id="title" style="margin-top:10px;">Harbour frozen</h3>
+      <p class="caption" id="cap">Svolvær, Lofoten. February.</p>
       <div class="licence">
         <h4>Licence this image</h4>
         <div class="tier"><span>Custom enquiry</span><strong>→</strong></div>
@@ -225,11 +280,14 @@
       </div>
       <div class="col">
         <h4>Galleries</h4>
-        <a href="gallery-a.html">Tuscany · Olive groves</a>
-        <a href="gallery-b.html">Lisbon · Tiles &amp; sun</a>
-        <a href="gallery-d.html">Scottish Coast · Grey skies</a>
+        <a href="gallery-alpine-expedition.html">Alpine &amp; Expedition</a>
+        <a href="gallery-heritage-whimsical.html">Heritage &amp; Whimsical</a>
+        <a href="gallery-sun-tropical.html">Sun &amp; Tropical</a>
+        <a href="gallery-winter-wander.html">Winter &amp; Wander</a>
+        <a href="gallery-motion-match.html">Motion &amp; Match</a>
+        <a href="gallery-nest-nook.html">Nest &amp; Nook</a>
+        <a href="gallery-wild-natural.html">Wild &amp; Natural</a>
         <a href="private.html">Client login</a>
-        <a href="#">Licensing</a>
       </div>
       <div class="col">
         <h4>About</h4>
@@ -252,6 +310,64 @@
 </footer>
 
 <script>
+  // Cloudinary configuration
+  const CLOUD = {
+    base: 'https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload', // ADD YOUR CLOUDINARY CLOUD NAME
+    tile_landscape: 't_tile_landscape',
+    tile_portrait: 't_tile_portrait',
+    lightbox_public: 't_lightbox_public'
+  };
+
+  function detectAndAssignSpans() {
+    const tiles = document.querySelectorAll('.justified .tile');
+    let colsUsed = 0;
+
+    tiles.forEach((tile, index) => {
+      if ([...tile.classList].some(c => c.startsWith('span-'))) return;
+
+      const img = new Image();
+      const publicId = tile.dataset.publicId;
+
+      img.onload = function() {
+        const isPortrait = this.naturalHeight > this.naturalWidth;
+        const isSquare = Math.abs(this.naturalWidth - this.naturalHeight) / this.naturalWidth < 0.1;
+
+        let span;
+        if (isSquare) {
+          span = 4;
+        } else if (isPortrait) {
+          span = (index % 3 === 0) ? 3 : 5;
+        } else {
+          const remaining = 12 - colsUsed;
+          if (remaining >= 7 && index % 4 === 0) span = 7;
+          else if (remaining >= 6) span = 6;
+          else span = 4;
+        }
+
+        if (colsUsed + span > 12) colsUsed = 0;
+        colsUsed += span;
+        if (colsUsed === 12) colsUsed = 0;
+
+        tile.classList.add(`span-${span}`);
+
+        const transform = isPortrait ? CLOUD.tile_portrait : CLOUD.tile_landscape;
+        tile.style.backgroundImage = `url('${CLOUD.base}/${transform}/${publicId}')`;
+        tile.dataset.img = `${CLOUD.base}/${CLOUD.lightbox_public}/${publicId}`;
+
+        tile.style.opacity = '0';
+        tile.style.transition = 'opacity 0.3s ease';
+        requestAnimationFrame(() => { tile.style.opacity = '1'; });
+      };
+
+      img.onerror = function() {
+        tile.classList.add('span-4');
+        tile.style.opacity = '1';
+      };
+
+      img.src = `${CLOUD.base}/w_20,q_1/${publicId}`;
+    });
+  }
+
   // Image protection
   document.addEventListener('contextmenu', e => {
     if (e.target.classList.contains('tile') || e.target.tagName === 'IMG' || e.target.id === 'photo') {
@@ -370,6 +486,32 @@
     clearAll();
     window.location.href = dest;
   });
+
+  // ── Load more ─────────────────────────────────────────────
+  (function() {
+    const INITIAL = 12;
+    const BATCH   = 9;
+    const tiles   = Array.from(document.querySelectorAll('#grid .tile'));
+    const btn     = document.getElementById('load-more');
+    const endMsg  = document.getElementById('gallery-end');
+    if (!btn || tiles.length <= INITIAL) { if (btn) btn.hidden = true; return; }
+    tiles.forEach((t, i) => { if (i >= INITIAL) t.style.display = 'none'; });
+    let shown = INITIAL;
+    function revealNext() {
+      const batch = tiles.slice(shown, shown + BATCH);
+      batch.forEach(t => {
+        t.style.display = '';
+        t.classList.add('is-revealed');
+        t.addEventListener('animationend', () => t.classList.remove('is-revealed'), { once: true });
+      });
+      shown += batch.length;
+      if (shown >= tiles.length) { btn.hidden = true; endMsg.style.display = 'block'; }
+      detectAndAssignSpans();
+    }
+    btn.addEventListener('click', revealNext);
+  })();
+
+  detectAndAssignSpans();
 </script>
 
 </body>
