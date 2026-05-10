@@ -13,7 +13,7 @@
 <!-- Header -->
 <header class="site-header">
   <div class="inner">
-    <a class="brand" href="index.html"><img src="images/favicon.png" alt="" class="brand-icon">The Roaming Lens</a>
+    <a class="brand" href="index.html"><img src="images/favicon.png" alt="" class="brand-icon" width="32" height="32">The Roaming Lens</a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -28,25 +28,24 @@
 
 <!-- Entry split layout -->
 <section class="entry-page">
-  <div class="visual" style="background-image:url('https://picsum.photos/1600/1066?random=40');">
+  <div class="visual" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_hero/DSCF0612_sn6gr6');">
   </div>
   <div class="form-wrap">
     <div class="entry-card">
       <span class="eyebrow">Private client gallery</span>
-      <h1>Welcome back.</h1>
-      <p>Enter the email address that received your invitation. We'll send you a secure, single-use link to your collection — no password needed.</p>
-      <form onsubmit="event.preventDefault(); showSent();">
+      <h1>Request access.</h1>
+      <p>Enter your email address and we'll open a message for you to send — we'll reply with a secure link to your private collection.</p>
+      <form onsubmit="event.preventDefault(); requestAccess();">
         <label for="email">Your email</label>
         <input type="email" id="email" required placeholder="you@brand.com" autocomplete="email">
-        <button type="submit" class="btn btn-primary">Send my gallery link →</button>
+        <button type="submit" class="btn btn-primary">Request gallery access →</button>
       </form>
       <p class="fine" id="hint">
-        Links expire 14 days after they're sent and can only be opened by the recipient.
         Don't have an invitation yet? <a href="index.html#brands">Get in touch about a shoot →</a>
       </p>
       <div id="sent" style="display:none; padding: 16px 18px; background: var(--cream-deep); border-left: 3px solid var(--olive); margin-top: 24px; font-size: 14px; line-height: 1.6;">
-        <strong style="font-family: var(--serif); font-size: 1.1rem; font-style: italic;">Check your inbox.</strong><br>
-        We've sent a secure link to <span id="addr" style="color:var(--clay-aa);"></span>. It will expire in 14 days.
+        <strong style="font-family: var(--serif); font-size: 1.1rem; font-style: italic;">Your email client should open.</strong><br>
+        Send the pre-filled message from <span id="addr" style="color:var(--clay-aa);"></span> and we'll respond with your gallery link.
       </div>
     </div>
   </div>
@@ -83,12 +82,12 @@
 
   <div class="container">
     <div class="justified" style="padding-top: 24px;">
-      <div class="tile span-5" style="background-image:url('https://picsum.photos/1200/800?random=10');"></div>
-      <div class="tile span-4" style="background-image:url('https://picsum.photos/1000/666?random=20');"></div>
-      <div class="tile span-3" style="background-image:url('https://picsum.photos/900/600?random=60');"></div>
-      <div class="tile span-4" style="background-image:url('https://picsum.photos/900/600?random=90');"></div>
-      <div class="tile span-4" style="background-image:url('https://picsum.photos/900/600?random=50');"></div>
-      <div class="tile span-4" style="background-image:url('https://picsum.photos/900/600?random=110');"></div>
+      <div class="tile span-5" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_private/DSCF9265_zcxzng');"></div>
+      <div class="tile span-4" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_private/DSCF7457_gf8kce');"></div>
+      <div class="tile span-3" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_private/DSCF2110a_otjqvi');"></div>
+      <div class="tile span-4" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_private/DSCF7246_cubnm2');"></div>
+      <div class="tile span-4" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_private/DSCF5202_gee7nu');"></div>
+      <div class="tile span-4" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_private/IMG_8767c_hj9dzo');"></div>
     </div>
   </div>
 </section>
@@ -169,10 +168,16 @@
     });
   })();
 
-  // Mock magic-link confirmation
-  function showSent() {
-    const v = document.getElementById('email').value || 'your address';
-    document.getElementById('addr').textContent = v;
+  // Open mailto to site owner with visitor's email pre-filled
+  function requestAccess() {
+    const email = document.getElementById('email').value.trim();
+    if (!email) return;
+    const subject = encodeURIComponent('Private gallery access request');
+    const body = encodeURIComponent(
+      'Hi,\n\nI\'d like to request access to my private client gallery.\n\nMy email address: ' + email + '\n\nThank you'
+    );
+    window.location.href = 'mailto:annepeters86@gmail.com?subject=' + subject + '&body=' + body;
+    document.getElementById('addr').textContent = email;
     document.getElementById('sent').style.display = 'block';
     document.getElementById('hint').style.display = 'none';
   }
