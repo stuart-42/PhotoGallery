@@ -6,4 +6,10 @@
       "Bash(dir C:\\\\Users\\\\stuar_k06qbsq\\\\Downloads\\\\DSCF0990* *)",
       "Bash(git push *)",
       "Bash(git rm *)",
-      "Bash
+      "Bash(npm install *)",
+      "Bash(vercel --version)",
+      "Bash(git commit *)",
+      "Bash(findstr /m \"private.html\" *.html)"
+    ]
+  }
+}
