@@ -231,7 +231,7 @@ h3 { font-size: 1.4rem; line-height: 1.3; }
 .nav a.is-active { color: var(--clay-aa); }
 .nav a.is-active::after { width: 100%; }
 
-/* Hamburger toggle — hidden on desktop, shown ≤720px */
+/* Hamburger toggle — hidden on desktop, shown ≤890px */
 .nav-toggle {
   display: none;
   width: 40px;
@@ -258,7 +258,7 @@ h3 { font-size: 1.4rem; line-height: 1.3; }
 .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .nav-toggle[aria-expanded="true"] span:nth-child(3) { top: 20px; transform: rotate(-45deg); }
 
-@media (max-width: 720px) {
+@media (max-width: 890px) {
   .nav-toggle { display: block; }
 
   .nav {
