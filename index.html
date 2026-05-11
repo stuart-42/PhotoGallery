@@ -117,7 +117,7 @@
 <section class="story section" id="story">
   <div class="container">
     <div class="grid">
-      <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_public/DSCF6247_z1hmb9');"></div>
+      <div class="img" style="background-image:url('https://res.cloudinary.com/deeck6k0n/image/upload/t_lightbox_public/DSCF0883_icth8w');"></div>
       <div class="text">
         <span class="eyebrow">Our story</span>
         <h2 style="margin-top:8px;">Childhood adventures. Lifestyle photography.</h2>
@@ -212,34 +212,4 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
     });
-    document.addEventListener('click', e => {
-      if (toggle.getAttribute('aria-expanded') !== 'true') return;
-      if (header.contains(e.target)) return;
-      setOpen(false);
-    });
-  })();
-
-  // Gallery strip scroller
-  (function() {
-    const strip = document.getElementById('galleryStrip');
-    const prev  = document.getElementById('stripPrev');
-    const next  = document.getElementById('stripNext');
-    if (!strip || !prev || !next) return;
-
-    const STEP = 320; // px per button press
-
-    function updateButtons() {
-      prev.classList.toggle('hidden', strip.scrollLeft <= 0);
-      next.classList.toggle('hidden', strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 1);
-    }
-
-    prev.addEventListener('click', () => { strip.scrollBy({ left: -STEP, behavior: 'smooth' }); });
-    next.addEventListener('click', () => { strip.scrollBy({ left:  STEP, behavior: 'smooth' }); });
-    strip.addEventListener('scroll', updateButtons, { passive: true });
-
-    // Initial state
-    updateButtons();
-  })();
-</script>
-</body>
-</html>
+    document.addEventListener('
