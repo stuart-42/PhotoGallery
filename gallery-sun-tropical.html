@@ -377,7 +377,7 @@
       </div>
       <div class="col">
         <h4>For brands</h4>
-        <a href="#">Request pack</a>
+        <a href="mailto:theroaminglensco@gmail.com?subject=Brand%20Pack%20Request&body=Hi%2C%0A%0AI%27d%20love%20to%20request%20a%20brand%20pack%20from%20The%20Roaming%20Lens.%0A%0AName%3A%0ABrand%3A%0AWebsite%3A%0AWhat%20I%27m%20looking%20for%3A">Request pack</a>
       </div>
     </div>
     <div class="legal">
@@ -510,13 +510,13 @@
     if (reqBtn) {
       const _subj = encodeURIComponent('Licensing Enquiry — ' + (t.dataset.title || 'Image'));
       const _body = encodeURIComponent(
-        'Hi Anne,\n\nI am interested in licensing the following image:\n\n'
+        'Hi,\n\nI am interested in licensing the following image:\n\n'
         + 'Image: ' + (t.dataset.title || '') + '\n'
         + (t.dataset.cap ? 'Caption: ' + t.dataset.cap + '\n' : '')
         + 'URL: ' + (t.dataset.img || '') + '\n'
         + '\nIntended use:\n\nPlease let me know your licensing terms.\n\nThank you'
       );
-      reqBtn.href = 'mailto:annepeters86@gmail.com?subject=' + _subj + '&body=' + _body;
+      reqBtn.href = 'mailto:theroaminglensco@gmail.com?subject=' + _subj + '&body=' + _body;
     }
     const lbPrev = document.getElementById('lb-prev');
     const lbNext = document.getElementById('lb-next');
@@ -607,13 +607,13 @@
     const gallery = 'Sun & Tropical';
     const subject = encodeURIComponent('Image Licensing Enquiry \u2014 ' + count + ' image' + (count === 1 ? '' : 's') + ' from ' + gallery);
     const body    = encodeURIComponent(
-      'Hi Anne,\n\n' +
+      'Hi,\n\n' +
       'I am interested in licensing the following image' + (count === 1 ? '' : 's') + ' from the ' + gallery + ' gallery:\n\n' +
       lines.join('\n\n') +
       '\n\nPlease let me know the licensing options available.\n\nThanks'
     );
     clearAll();
-    window.location.href = 'mailto:annepeters86@gmail.com?subject=' + subject + '&body=' + body;
+    window.location.href = 'mailto:theroaminglensco@gmail.com?subject=' + subject + '&body=' + body;
   });
 
   // ── Load more ─────────────────────────────────────────────
